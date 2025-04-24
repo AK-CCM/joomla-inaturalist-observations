@@ -1,39 +1,49 @@
-# Joomla Module: iNaturalist Observations
+# iNaturalist Observations Module for Joomla!
 
-This Joomla 4/5 module displays recent observations from a specific [iNaturalist](https://www.inaturalist.org) user filtered by taxon (e.g., Fungi). It's privacy-friendly (no embedded iframes) and supports thumbnail images, common names, and observation dates.
+This module embeds the recent [iNaturalist.org](https://www.inaturalist.org) observations of a specific user in your Joomla! v4/5 based website. You can optionally filter the results by taxon groups such as plants, fungi & lichens, animals, or a custom taxon (ID needed). The module uses server-side caching to reduce API calls, is fully GDPR compliant, and includes multilingual support.
 
 <!-- ![Example Screenshot](screenshot.png) Optional -->
 
 ## 🌿 Features
 
-- Uses iNaturalist public API
-- Filters by `user_id` and `taxon_id`
-- Displays thumbnails and basic metadata
-- Uses local caching to reduce API requests
-- No iframe = better GDPR compliance
+- Displays latest observations from a specific iNaturalist user
+- Optional filter by taxon group or custom taxon ID
+- Configurable number of observations
+- Server-side caching (configurable duration)
+- Fully GDPR compliant
+- Multilingual (English and German)
+- GPL v3 licensed
 
 ## 📦 Installation
 
-1. Download the contents of the `mod_inaturalist_observations` folder as a ZIP file.
-2. In Joomla Admin:  
-   **Extensions → Manage → Install** → Upload your ZIP.
-3. Go to **Extensions → Modules**, find **“iNaturalist Observations”**, and assign it to a position and menu.
+1. Download the latest ZIP package from the [Releases](https://github.com/AK-CCM/joomla-inaturalist-observations/releases) section.
+2. Install the module via the Joomla! admin interface under *Extensions > Manage > Install*.
+3. Go to *Extensions > Modules*, find **iNaturalist Observations**, and publish it in a suitable position.
+4. In the module settings:
+   - Enter the iNaturalist username.
+   - Optionally select a taxon group or leave it blank to show all user observations.
+   - Adjust count and cache time as needed.
 
-## 🔧 Parameters
+## ⚙️ Configuration Options
 
-| Parameter | Description |
-|----------|-------------|
-| `User ID` | Your iNaturalist username |
-| `Taxon ID` | iNaturalist Taxon ID (e.g., 47170 = Fungi) |
-| `Count` | Number of recent observations to show |
-| `Cache Duration` | Time in seconds to keep API data cached |
+| **Parameter**   | **Description**                                             | **Default** |
+|----------------|-------------------------------------------------------------|-------------|
+| `User ID`      | iNaturalist username to fetch observations from             | *(required)* |
+| `Taxon Filter` | Filter by taxon group or leave blank to show all            | *All*       |
+| `Count`        | Number of recent observations to display                    | `5`         |
+| `Cache Time`   | Cache duration in seconds                                   | `86400`     |
 
-## ✅ Example
+## 🌍 Localization
 
-Show 5 recent fungal observations by user `ak_ccm`:
+- 🇬🇧 `en-GB` (English)
+- 🇩🇪 `de-DE` (Deutsch)
 
-```bash
-User ID: ak_ccm
-Taxon ID: 47170
-Count: 5
-Cache Duration: 86400
+## 📜 License
+
+This module is released under the [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.html).
+
+---
+
+## ⚖️ Joomla! Trademark Disclaimer
+
+This repository is not affiliated with or endorsed by the Joomla! Project. It is neither supported nor guaranteed by Joomla! or Open Source Matters.
