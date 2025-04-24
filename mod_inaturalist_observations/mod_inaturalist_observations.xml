@@ -44,12 +44,19 @@
                        type="list"
                        label="MOD_INATURALIST_OBSERVATIONS_TAXON_ID_LABEL"
                        description="MOD_INATURALIST_OBSERVATIONS_TAXON_ID_DESC">
-                    <!-- Optionen für die Taxon-Auswahl -->
-                    <option value="">--- MOD_INATURALIST_OBSERVATIONS_TAXON_ALL ---</option> <!-- Alle Lebewesen -->
-                    <option value="47170">MOD_INATURALIST_OBSERVATIONS_TAXON_PLANTS</option>  <!-- Pflanzen -->
-                    <option value="47169">MOD_INATURALIST_OBSERVATIONS_TAXON_FUNGI</option>  <!-- Pilze & Flechten -->
-                    <option value="47168">MOD_INATURALIST_OBSERVATIONS_TAXON_ANIMALS</option>  <!-- Tiere -->
+                    <option value="">MOD_INATURALIST_OBSERVATIONS_TAXON_ALL</option>
+                    <option value="47170">MOD_INATURALIST_OBSERVATIONS_TAXON_PLANTS</option>
+                    <option value="47169">MOD_INATURALIST_OBSERVATIONS_TAXON_FUNGI</option>
+                    <option value="47168">MOD_INATURALIST_OBSERVATIONS_TAXON_ANIMALS</option>
+                    <option value="custom">MOD_INATURALIST_OBSERVATIONS_TAXON_CUSTOM</option>
                 </field>
+
+                <!-- Wird nur angezeigt, wenn 'custom' gewählt ist -->
+                <field name="taxon_custom"
+                       type="text"
+                       label="MOD_INATURALIST_OBSERVATIONS_TAXON_CUSTOM_LABEL"
+                       description="MOD_INATURALIST_OBSERVATIONS_TAXON_CUSTOM_DESC"
+                       showon="taxon_id:custom" />
 
                 <field name="count"
                        type="number"
@@ -60,8 +67,8 @@
                 <field name="cache_time"
                        type="number"
                        default="86400"
-                       label="MOD_INATURALIST_OBSERVATIONS_CACHE_TIME_LABEL"
-                       description="MOD_INATURALIST_OBSERVATIONS_CACHE_TIME_DESC" />
+                       label="MOD_INATURALIST_OBSERVATIONS_CACHE_DURATION_LABEL"
+                       description="MOD_INATURALIST_OBSERVATIONS_CACHE_DURATION_DESC" />
             </fieldset>
         </fields>
     </config>
