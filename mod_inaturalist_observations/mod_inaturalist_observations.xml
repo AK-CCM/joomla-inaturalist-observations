@@ -4,31 +4,64 @@
     <title>iNaturalist Observations</title>
     <version>1.0.0</version>
     <description>Displays recent iNaturalist observations from a specific user and taxon.</description>
+
+    <!-- Autorenangaben -->
     <author>Andreas Kunze</author>
     <creationDate>2025-04-22</creationDate>
     <authorUrl>https://github.com/AK-CCM/joomla-inaturalist-observations</authorUrl>
-    <copyright>Assisted by ChatGPT (OpenAI GPT-4, April 2025)</copyright>
+
+    <!-- Lizenz und Urheberrecht -->
+    <copyright>Andreas Kunze, assisted by ChatGPT (OpenAI GPT-4, April 2025)</copyright>
     <license>GNU General Public License v3.0</license>
 
+    <!-- Moduldateien -->
     <files>
         <filename module="mod_inaturalist_observations">mod_inaturalist_observations.php</filename>
         <filename>helper.php</filename>
         <filename>index.html</filename>
         <folder>tmpl</folder>
+        <folder>language</folder>
     </files>
 
+    <!-- Sprachdateien -->
     <languages>
-		<language tag="de-DE">language/de-DE/de-DE.mod_inaturalist_observations.ini</language>
+        <language tag="de-DE">language/de-DE/de-DE.mod_inaturalist_observations.ini</language>
         <language tag="en-GB">language/en-GB/en-GB.mod_inaturalist_observations.ini</language>
     </languages>
 
+    <!-- Konfigurierbare Parameter im Backend -->
     <config>
         <fields name="params">
             <fieldset name="basic">
-                <field name="user_id" type="text" default="ak_ccm" label="User ID" description="iNaturalist User ID" />
-                <field name="taxon_id" type="text" default="47170" label="Taxon ID" description="Taxon ID to filter (e.g., fungi & lichens)" />
-                <field name="count" type="number" default="5" label="Number of Observations" />
-                <field name="cache_time" type="number" default="86400" label="Cache Duration (in seconds)" />
+                <field name="user_id"
+                       type="text"
+                       required="true"
+                       label="MOD_INATURALIST_OBSERVATIONS_USER_ID_LABEL"
+                       description="MOD_INATURALIST_OBSERVATIONS_USER_ID_DESC" />
+
+                <!-- Dropdown für taxon_id -->
+                <field name="taxon_id"
+                       type="list"
+                       label="MOD_INATURALIST_OBSERVATIONS_TAXON_ID_LABEL"
+                       description="MOD_INATURALIST_OBSERVATIONS_TAXON_ID_DESC">
+                    <!-- Optionen für die Taxon-Auswahl -->
+                    <option value="">--- MOD_INATURALIST_OBSERVATIONS_TAXON_ALL ---</option> <!-- Alle Lebewesen -->
+                    <option value="47170">MOD_INATURALIST_OBSERVATIONS_TAXON_PLANTS</option>  <!-- Pflanzen -->
+                    <option value="47169">MOD_INATURALIST_OBSERVATIONS_TAXON_FUNGI</option>  <!-- Pilze & Flechten -->
+                    <option value="47168">MOD_INATURALIST_OBSERVATIONS_TAXON_ANIMALS</option>  <!-- Tiere -->
+                </field>
+
+                <field name="count"
+                       type="number"
+                       default="5"
+                       label="MOD_INATURALIST_OBSERVATIONS_COUNT_LABEL"
+                       description="MOD_INATURALIST_OBSERVATIONS_COUNT_DESC" />
+
+                <field name="cache_time"
+                       type="number"
+                       default="86400"
+                       label="MOD_INATURALIST_OBSERVATIONS_CACHE_TIME_LABEL"
+                       description="MOD_INATURALIST_OBSERVATIONS_CACHE_TIME_DESC" />
             </fieldset>
         </fields>
     </config>
