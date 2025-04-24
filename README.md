@@ -21,17 +21,17 @@ This module embeds the recent [iNaturalist.org](https://www.inaturalist.org) obs
 3. Go to *Extensions > Modules*, find **iNaturalist Observations**, and publish it in a suitable position.
 4. In the module settings:
    - Enter the iNaturalist username.
-   - Optionally select a taxon group, enter a custom taxon ID or leave it blank to show all user observations.
+   - Optionally select a taxon group or enter a custom taxon ID or leave it blank to show all user observations.
    - Adjust count and cache time as needed.
 
 ## ⚙️ Configuration Options
 
-| **Parameter**   | **Description**                                             | **Default** |
-|----------------|-------------------------------------------------------------|-------------|
-| `User ID`      | iNaturalist username to fetch observations from             | *(required)* |
-| `Taxon Filter` | Filter by taxon group or leave blank to show all            | *All*       |
-| `Count`        | Number of recent observations to display                    | `5`         |
-| `Cache Time`   | Cache duration in seconds                                   | `86400`     |
+| **Parameter**  | **Description**                                                                | **Default**  |
+|----------------|-------------------------------------------------------------|------------------|
+| `User ID`      | iNaturalist username to fetch observations from                                | *(required)* |
+| `Taxon Filter` | Filter by taxon group or custom taxon ID or leave blank to show all            | *All*        |
+| `Count`        | Number of recent observations to display                                       | `5`          |
+| `Cache Time`   | Cache duration in seconds                                                      | `86400`      |
 
 ## 🌍 Localization
 
