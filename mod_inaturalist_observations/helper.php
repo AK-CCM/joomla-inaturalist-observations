@@ -1,29 +1,55 @@
 <?php
+
 defined('_JEXEC') or die;
 
-class ModINatHelper {
-    public static function getObservations($params) {
-        $user = $params->get('user_id', 'ak_ccm');
-        $taxon = $params->get('taxon_id', '47170');
+class ModINaturalistObservationsHelper
+{
+    public static function getObservations($params)
+    {
+        $user = trim($params->get('user_id'));
+        $taxon = trim($params->get('taxon_id'));
         $count = (int) $params->get('count', 5);
-        $cacheTime = (int) $params->get('cache_time', 86400);
+        $cacheTime = (int) $params->get('cache_time', 86400); // 1 Tag
 
-        $url = 'https://api.inaturalist.org/v1/observations?user_id=' . $user . '&taxon_id=' . $taxon . '&per_page=' . $count . '&order_by=observed_on&order=desc';
-        $cacheFile = JPATH_SITE . '/cache/inaturalist_' . $user . '_' . $taxon . '.json';
+        // Kein Benutzername? Keine Anfrage möglich
+        if (empty($user)) {
+            return [];
+        }
 
-        if (!file_exists($cacheFile) || (time() - filemtime($cacheFile)) > $cacheTime) {
-            $json = file_get_contents($url);
-            if ($json) {
-                file_put_contents($cacheFile, $json);
+        // API-Endpunkt vorbereiten
+        $url = "https://api.inaturalist.org/v1/observations?user_id=" . urlencode($user)
+             . "&per_page=" . $count
+             . "&order=desc"
+             . "&order_by=observed_on";
+
+        // Wenn ein taxon_id gewählt wurde, ergänze es in der URL
+        if (!empty($taxon)) {
+            $url .= "&taxon_id=" . urlencode($taxon);
+        }
+
+        // Joomla Cache verwenden
+        $cache = \Joomla\CMS\Factory::getCache('mod_inaturalist_observations', '');
+        $cache->setCaching(true);
+        $cache->setLifeTime($cacheTime);
+
+        // Daten abrufen oder aus dem Cache holen
+        return $cache->get(function () use ($url) {
+            $options = [
+                'http' => [
+                    'method'  => 'GET',
+                    'header'  => "User-Agent: Joomla-iNaturalist-Module\r\n"
+                ]
+            ];
+            $context = stream_context_create($options);
+            $response = file_get_contents($url, false, $context);
+
+            if ($response === false) {
+                return [];
             }
-        } else {
-            $json = file_get_contents($cacheFile);
-        }
 
-        if ($json) {
-            return json_decode($json, true)['results'];
-        }
+            $data = json_decode($response, true);
 
-        return [];
+            return $data['results'] ?? [];
+        }, md5($url));
     }
 }
