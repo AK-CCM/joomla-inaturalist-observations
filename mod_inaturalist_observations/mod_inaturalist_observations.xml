@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" version="4.0" client="site" method="upgrade">
     <name>MOD_INATURALIST_OBSERVATIONS</name>
-    <title>iNaturalist Observations</title>
+    <title>
+        <language tag="en-GB">iNaturalist Observations</language>
+        <language tag="de-DE">iNaturalist-Beobachtungen</language>
+    </title>
     <version>1.0.0</version>
     <description>Displays recent iNaturalist observations from a specific user and optionally filtered by taxon.</description>
 
@@ -57,16 +60,20 @@
                        description="MOD_INATURALIST_OBSERVATIONS_COUNT_DESC" />
 
                 <field name="cache_duration"
-       			type="number"
-       			default="24"
-       			label="MOD_INATURALIST_OBSERVATIONS_CACHE_DURATION_LABEL"
-       			description="MOD_INATURALIST_OBSERVATIONS_CACHE_DURATION_DESC"
-       			min="1"
-       			step="1" />
+                       type="number"
+                       default="24"
+                       label="MOD_INATURALIST_OBSERVATIONS_CACHE_DURATION_LABEL"
+                       description="MOD_INATURALIST_OBSERVATIONS_CACHE_DURATION_DESC"
+                       min="1"
+                       step="1" />
             </fieldset>
         </fields>
     </config>
+
     <default>
-	    <title>MOD_INATURALIST_OBSERVATIONS</title>
+        <title>
+            <language tag="en-GB">iNaturalist Observations</language>
+            <language tag="de-DE">iNaturalist-Beobachtungen</language>
+        </title>
     </default>
 </extension>
