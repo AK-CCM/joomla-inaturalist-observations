@@ -19,10 +19,12 @@ This module embeds the recent [iNaturalist.org](https://www.inaturalist.org) obs
 1. Download the latest ZIP package from the [Releases](https://github.com/AK-CCM/joomla-inaturalist-observations/releases) section.
 2. Install the module via the Joomla! admin interface under *Extensions > Manage > Install*.
 3. Go to *Extensions > Modules*, find **iNaturalist Observations**, and publish it in a suitable position.
-4. In the module settings:
-   - Enter the iNaturalist username.
-   - Optionally select a taxon group or enter a custom taxon ID or leave it blank to show all user observations.
-   - Adjust count and cache time as needed.
+4. Configure the module options:
+   - Enter the iNaturalist username whose observations should be displayed. (required)
+   - Optionally select an organism group e.g. Plants, Animals, Fungi including Lichens. (default: All Organisms)
+   - Or choose **Custom** and enter a taxon ID to filter by that specific taxon.
+   - Set how many recent observations should be displayed. (default: 5)
+   - Define the cache duration in seconds. (default: 86400 seconds = 1 day)
 
 ## ⚙️ Configuration Options
 
