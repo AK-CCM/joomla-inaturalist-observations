@@ -14,9 +14,7 @@ class ModINatHelper
         $taxonFilter  = $params->get('taxon_filter', '');
         $customTaxon  = trim($params->get('taxon_custom'));
         $count        = (int) $params->get('count', 5);
-
-        // Cache Duration wird jetzt in Stunden eingegeben -> umrechnen in Sekunden
-        $cacheSeconds = (int) $params->get('cache_duration', 24) * 3600;
+        $cacheSeconds = (int) $params->get('cache_duration', 86400);
 
         if (!$userId) {
             return [];
@@ -29,28 +27,37 @@ class ModINatHelper
             $taxonId = $taxonFilter;
         }
 
-        // Generate a unique cache key based on username, taxon filter, custom taxon ID, count, and language
-        $lang     = JFactory::getLanguage()->getTag();
+        // Fetch user information (including user avatar)
+        $http = HttpFactory::getHttp();
+        $userInfoUrl = 'https://api.inaturalist.org/v1/users/' . urlencode($userId);
+
+        // Generate a unique cache key based on username, taxon filter, custom taxon ID, count, language, and user image
+        $lang = JFactory::getLanguage()->getTag();
         $cacheKey = 'inat_obs_' . md5($userId . '|' . $taxonFilter . '|' . $customTaxon . '|' . $count . '|' . $lang);
 
         $cache = Factory::getContainer()->get(CacheControllerFactoryInterface::class)
-                   ->createCacheController('callback', ['defaultgroup' => 'mod_inaturalist']);
+            ->createCacheController('callback', ['defaultgroup' => 'mod_inaturalist']);
 
         return $cache->get(
-            function () use ($userId, $taxonId, $count) {
-                $http   = HttpFactory::getHttp();
-                $url    = 'https://api.inaturalist.org/v1/observations?user_id=' . urlencode($userId)
+            function () use ($userId, $taxonId, $count, $http, $userInfoUrl) {
+                try {
+                    // Fetch user information for the avatar
+                    $userResponse = $http->get($userInfoUrl);
+                    $userBody = json_decode($userResponse->body, true);
+                    $userAvatar = $userBody['results'][0]['icon'] ?? '';
+
+                    // Now fetch the observations
+                    $url = 'https://api.inaturalist.org/v1/observations?user_id=' . urlencode($userId)
                         . '&order_by=observed_on&order=desc&per_page=' . $count;
 
-                if ($taxonId !== '') {
-                    $url .= '&taxon_id=' . $taxonId;
-                }
+                    if ($taxonId !== '') {
+                        $url .= '&taxon_id=' . $taxonId;
+                    }
 
-                try {
                     $response = $http->get($url);
-                    $body     = json_decode($response->body, true);
+                    $body = json_decode($response->body, true);
 
-                    return $body['results'] ?? [];
+                    return ['observations' => $body['results'] ?? [], 'avatar' => $userAvatar];
                 } catch (Exception $e) {
                     return [];
                 }
