@@ -8,47 +8,42 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 
-// Falls keine Beobachtungen vorhanden sind
-if (empty($observations['observations'])) {
+// Sicherstellen, dass $data verfügbar ist
+$observations = $data['observations'] ?? [];
+$avatar = $data['avatar'] ?? '';
+$username = $data['username'] ?? '';
+
+if (empty($observations)) {
     echo '<div class="alert alert-info" style="font-family: Inter, Roboto, \'Helvetica Neue\', \'Arial Nova\', \'Nimbus Sans\', Arial, sans-serif;">' . Text::_('MOD_INATURALIST_OBSERVATIONS_NO_RESULTS') . '</div>';
     return;
 }
-
-$items = $observations['observations'];
-$avatar = $observations['avatar'] ?? '';
 ?>
 
 <div class="row g-3" style="font-family: Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;">
-<?php foreach ($items as $observation) :
+<?php foreach ($observations as $observation) :
 
-    // Bild ermitteln (lokaler Pfad)
     $photoUrl = '';
     if (!empty($observation['local_photo'])) {
         $photoUrl = Uri::root() . $observation['local_photo'];
     }
 
-    // Name ermitteln
     $commonName = $observation['taxon']['preferred_common_name'] ?? '';
     $scientificName = $observation['taxon']['name'] ?? '';
     $displayName = $commonName ?: $scientificName;
 
-    // Beobachtungsdatum formatieren
     $date = '';
     if (!empty($observation['observed_on'])) {
         $dateObject = new DateTime($observation['observed_on']);
         $date = $dateObject->format('d. F Y');
     }
 
-    // Ort zusammensetzen
     $place = '';
     if (!empty($observation['place_guess'])) {
         $place = htmlspecialchars($observation['place_guess'], ENT_QUOTES, 'UTF-8');
     }
 
-    // Link zur Detailseite
     $observationUrl = 'https://www.inaturalist.org/observations/' . (int) $observation['id'];
 
 ?>
@@ -86,22 +81,15 @@ $avatar = $observations['avatar'] ?? '';
 <?php endforeach; ?>
 </div>
 
-<?php
-// Benutzerbild + Link zu allen Beobachtungen
-$userAvatar = !empty($avatar) ? Uri::root() . $avatar : '';
-$userId = htmlspecialchars($params->get('username'), ENT_QUOTES, 'UTF-8');
-$profileLink = 'https://www.inaturalist.org/observations?user_id=' . $userId;
-?>
-
-<?php if (!empty($userAvatar)) : ?>
+<?php if ($avatar) : ?>
 <div class="d-flex align-items-center mt-4" style="font-family: Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;">
     <div class="flex-shrink-0">
-        <a href="<?php echo $profileLink; ?>" target="_blank" rel="noopener">
-            <img src="<?php echo htmlspecialchars($userAvatar, ENT_QUOTES, 'UTF-8'); ?>" alt="iNaturalist Profile" class="rounded-circle" style="width: 48px; height: 48px; object-fit: cover;">
+        <a href="https://www.inaturalist.org/observations?user_id=<?php echo htmlspecialchars($username, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener">
+            <img src="<?php echo Uri::root() . $avatar; ?>" alt="iNaturalist Profile" class="rounded-circle" style="width: 48px; height: 48px; object-fit: cover;">
         </a>
     </div>
     <div class="flex-grow-1 ms-3">
-        <a href="<?php echo $profileLink; ?>" target="_blank" rel="noopener" class="fw-bold text-decoration-none text-dark">
+        <a href="https://www.inaturalist.org/observations?user_id=<?php echo htmlspecialchars($username, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener" class="fw-bold text-decoration-none text-dark">
             <?php echo Text::_('MOD_INATURALIST_OBSERVATIONS_VIEW_ON_INATURALIST'); ?>
         </a>
     </div>
