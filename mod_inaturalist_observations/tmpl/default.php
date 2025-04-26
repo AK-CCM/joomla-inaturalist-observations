@@ -84,14 +84,14 @@ if (empty($observations)) {
 
 <?php
 // Benutzerbild + Link zu allen Beobachtungen
-$userProfilePic = 'https://static.inaturalist.org/attachments/users/icons/XXXXX/thumb.jpg'; // <-- Hier deinen Bildlink einfügen
-$profileLink    = 'https://www.inaturalist.org/observations/ak_ccm';
+$userAvatar = $avatar ?? 'https://static.inaturalist.org/attachments/users/icons/XXXXX/thumb.jpg'; // Standardbild, falls kein Avatar vorhanden
+$profileLink = 'https://www.inaturalist.org/observations/' . htmlspecialchars($userId);
 ?>
 
 <div class="d-flex align-items-center mt-4" style="font-family: Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;">
     <div class="flex-shrink-0">
         <a href="<?php echo $profileLink; ?>" target="_blank" rel="noopener">
-            <img src="<?php echo $userProfilePic; ?>" alt="iNaturalist Profile" class="rounded-circle" style="width: 48px; height: 48px; object-fit: cover;">
+            <img src="<?php echo $userAvatar; ?>" alt="iNaturalist Profile" class="rounded-circle" style="width: 48px; height: 48px; object-fit: cover;">
         </a>
     </div>
     <div class="flex-grow-1 ms-3">
