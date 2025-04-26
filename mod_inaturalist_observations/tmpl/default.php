@@ -9,21 +9,25 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
 
 // Falls keine Beobachtungen vorhanden sind
-if (empty($observations)) {
+if (empty($observations['observations'])) {
     echo '<div class="alert alert-info" style="font-family: Inter, Roboto, \'Helvetica Neue\', \'Arial Nova\', \'Nimbus Sans\', Arial, sans-serif;">' . Text::_('MOD_INATURALIST_OBSERVATIONS_NO_RESULTS') . '</div>';
     return;
 }
+
+$items = $observations['observations'];
+$avatar = $observations['avatar'] ?? '';
 ?>
 
 <div class="row g-3" style="font-family: Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;">
-<?php foreach ($observations as $observation) :
+<?php foreach ($items as $observation) :
 
-    // Bild ermitteln
+    // Bild ermitteln (lokaler Pfad)
     $photoUrl = '';
-    if (!empty($observation['photos'][0]['url'])) {
-        $photoUrl = str_replace('square', 'medium', $observation['photos'][0]['url']);
+    if (!empty($observation['local_photo'])) {
+        $photoUrl = Uri::root() . $observation['local_photo'];
     }
 
     // Name ermitteln
@@ -54,7 +58,7 @@ if (empty($observations)) {
                 <?php if ($photoUrl) : ?>
                     <div class="col-auto">
                         <a href="<?php echo $observationUrl; ?>" target="_blank" rel="noopener">
-                            <img src="<?php echo $photoUrl; ?>" class="img-fluid rounded-start" alt="<?php echo htmlspecialchars($displayName, ENT_QUOTES, 'UTF-8'); ?>" style="width:100px; height:100px; object-fit:cover;">
+                            <img src="<?php echo htmlspecialchars($photoUrl, ENT_QUOTES, 'UTF-8'); ?>" class="img-fluid rounded-start" alt="<?php echo htmlspecialchars($displayName, ENT_QUOTES, 'UTF-8'); ?>" style="width:100px; height:100px; object-fit:cover;">
                         </a>
                     </div>
                 <?php endif; ?>
@@ -84,14 +88,16 @@ if (empty($observations)) {
 
 <?php
 // Benutzerbild + Link zu allen Beobachtungen
-$userAvatar = isset($avatar) && !empty($avatar) ? $avatar : 'https://static.inaturalist.org/attachments/users/icons/XXXXX/thumb.jpg'; // Sicherstellen, dass $avatar vorhanden ist
-$profileLink = 'https://www.inaturalist.org/observations/' . htmlspecialchars($userId);
+$userAvatar = !empty($avatar) ? Uri::root() . $avatar : '';
+$userId = htmlspecialchars($params->get('username'), ENT_QUOTES, 'UTF-8');
+$profileLink = 'https://www.inaturalist.org/observations?user_id=' . $userId;
 ?>
 
+<?php if (!empty($userAvatar)) : ?>
 <div class="d-flex align-items-center mt-4" style="font-family: Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;">
     <div class="flex-shrink-0">
         <a href="<?php echo $profileLink; ?>" target="_blank" rel="noopener">
-            <img src="<?php echo $userAvatar; ?>" alt="iNaturalist Profile" class="rounded-circle" style="width: 48px; height: 48px; object-fit: cover;">
+            <img src="<?php echo htmlspecialchars($userAvatar, ENT_QUOTES, 'UTF-8'); ?>" alt="iNaturalist Profile" class="rounded-circle" style="width: 48px; height: 48px; object-fit: cover;">
         </a>
     </div>
     <div class="flex-grow-1 ms-3">
@@ -100,3 +106,4 @@ $profileLink = 'https://www.inaturalist.org/observations/' . htmlspecialchars($u
         </a>
     </div>
 </div>
+<?php endif; ?>
