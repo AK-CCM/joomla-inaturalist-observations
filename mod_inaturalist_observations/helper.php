@@ -5,6 +5,7 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Http\HttpFactory;
 use Joomla\CMS\Cache\CacheControllerFactoryInterface;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\LanguageHelper;
 
 class ModINatHelper
 {
@@ -27,28 +28,32 @@ class ModINatHelper
             $taxonId = $taxonFilter;
         }
 
-        // Fetch user information (including user avatar)
-        $http = HttpFactory::getHttp();
-        $userInfoUrl = 'https://api.inaturalist.org/v1/users/' . urlencode($userId);
-
-        // Generate a unique cache key based on username, taxon filter, custom taxon ID, count, language, and user image
-        $lang = JFactory::getLanguage()->getTag();
-        $cacheKey = 'inat_obs_' . md5($userId . '|' . $taxonFilter . '|' . $customTaxon . '|' . $count . '|' . $lang);
+        // Sprache berücksichtigen
+        $lang = Factory::getApplication()->getLanguage()->getTag();
+        
+        // Cache-Key: Benutzer, Taxon, Count, Sprache
+        $cacheKey = 'inat_obs_' . md5($userId . $taxonId . $count . $lang);
 
         $cache = Factory::getContainer()->get(CacheControllerFactoryInterface::class)
             ->createCacheController('callback', ['defaultgroup' => 'mod_inaturalist']);
 
         return $cache->get(
-            function () use ($userId, $taxonId, $count, $http, $userInfoUrl) {
-                try {
-                    // Fetch user information for the avatar
-                    $userResponse = $http->get($userInfoUrl);
-                    $userBody = json_decode($userResponse->body, true);
-                    $userAvatar = $userBody['results'][0]['icon'] ?? '';
+            function () use ($userId, $taxonId, $count) {
+                $http = HttpFactory::getHttp();
 
-                    // Now fetch the observations
+                try {
+                    // Benutzerinfos laden (Avatar)
+                    $userResponse = $http->get('https://api.inaturalist.org/v1/users/' . urlencode($userId));
+                    $userBody = json_decode($userResponse->body, true);
+                    $userAvatar = '';
+                    if (!empty($userBody['results'][0]['icon'])) {
+                        $userAvatar = $userBody['results'][0]['icon'];
+                    }
+
+                    // Beobachtungen laden
                     $url = 'https://api.inaturalist.org/v1/observations?user_id=' . urlencode($userId)
-                        . '&order_by=observed_on&order=desc&per_page=' . $count;
+                        . '&order_by=observed_on&order=desc&per_page=' . $count
+                        . '&locale=' . urlencode(substr($lang, 0, 2)); // Sprachcode auf 2 Buchstaben kürzen
 
                     if ($taxonId !== '') {
                         $url .= '&taxon_id=' . $taxonId;
@@ -62,7 +67,10 @@ class ModINatHelper
                         'avatar' => $userAvatar,
                     ];
                 } catch (Exception $e) {
-                    return [];
+                    return [
+                        'observations' => [],
+                        'avatar' => '',
+                    ];
                 }
             },
             [$cacheKey],
