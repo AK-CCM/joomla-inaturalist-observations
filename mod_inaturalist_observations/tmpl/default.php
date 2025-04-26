@@ -84,7 +84,7 @@ if (empty($observations)) {
 
 <?php
 // Benutzerbild + Link zu allen Beobachtungen
-$userAvatar = $avatar ?? 'https://static.inaturalist.org/attachments/users/icons/XXXXX/thumb.jpg'; // Standardbild, falls kein Avatar vorhanden
+$userAvatar = isset($avatar) && !empty($avatar) ? $avatar : 'https://static.inaturalist.org/attachments/users/icons/XXXXX/thumb.jpg'; // Sicherstellen, dass $avatar vorhanden ist
 $profileLink = 'https://www.inaturalist.org/observations/' . htmlspecialchars($userId);
 ?>
 
