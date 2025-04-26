@@ -3,18 +3,14 @@
     <name>mod_inaturalist_observations</name>
     <title>iNaturalist Observations</title>
     <version>1.0.0</version>
-    <description>Displays recent iNaturalist observations from a specific user and taxon.</description>
+    <description>Displays recent iNaturalist observations from a specific user and optionally filtered by taxon.</description>
 
-    <!-- Autorenangaben -->
     <author>Andreas Kunze</author>
     <creationDate>2025-04-22</creationDate>
     <authorUrl>https://github.com/AK-CCM/joomla-inaturalist-observations</authorUrl>
-
-    <!-- Lizenz und Urheberrecht -->
     <copyright>Andreas Kunze, assisted by ChatGPT (OpenAI GPT-4, April 2025)</copyright>
     <license>GNU General Public License v3.0</license>
 
-    <!-- Moduldateien -->
     <files>
         <filename module="mod_inaturalist_observations">mod_inaturalist_observations.php</filename>
         <filename>helper.php</filename>
@@ -23,27 +19,25 @@
         <folder>language</folder>
     </files>
 
-    <!-- Sprachdateien -->
     <languages>
-        <language tag="de-DE">language/de-DE/de-DE.mod_inaturalist_observations.ini</language>
         <language tag="en-GB">language/en-GB/en-GB.mod_inaturalist_observations.ini</language>
+        <language tag="de-DE">language/de-DE/de-DE.mod_inaturalist_observations.ini</language>
     </languages>
 
-    <!-- Konfigurierbare Parameter im Backend -->
     <config>
         <fields name="params">
             <fieldset name="basic">
-                <field name="user_id"
+                <field name="username"
                        type="text"
                        required="true"
-                       label="MOD_INATURALIST_OBSERVATIONS_USER_ID_LABEL"
-                       description="MOD_INATURALIST_OBSERVATIONS_USER_ID_DESC" />
+                       label="MOD_INATURALIST_OBSERVATIONS_USERNAME_LABEL"
+                       description="MOD_INATURALIST_OBSERVATIONS_USERNAME_DESC" />
 
-                <!-- Dropdown für taxon_id -->
-                <field name="taxon_id"
+                <field name="taxon_filter"
                        type="list"
-                       label="MOD_INATURALIST_OBSERVATIONS_TAXON_ID_LABEL"
-                       description="MOD_INATURALIST_OBSERVATIONS_TAXON_ID_DESC">
+                       default=""
+                       label="MOD_INATURALIST_OBSERVATIONS_TAXON_FILTER_LABEL"
+                       description="MOD_INATURALIST_OBSERVATIONS_TAXON_FILTER_DESC">
                     <option value="">MOD_INATURALIST_OBSERVATIONS_TAXON_ALL</option>
                     <option value="47170">MOD_INATURALIST_OBSERVATIONS_TAXON_PLANTS</option>
                     <option value="47169">MOD_INATURALIST_OBSERVATIONS_TAXON_FUNGI</option>
@@ -51,12 +45,10 @@
                     <option value="custom">MOD_INATURALIST_OBSERVATIONS_TAXON_CUSTOM</option>
                 </field>
 
-                <!-- Wird nur angezeigt, wenn 'custom' gewählt ist -->
                 <field name="taxon_custom"
                        type="text"
                        label="MOD_INATURALIST_OBSERVATIONS_TAXON_CUSTOM_LABEL"
-                       description="MOD_INATURALIST_OBSERVATIONS_TAXON_CUSTOM_DESC"
-                       showon="taxon_id:custom" />
+                       description="MOD_INATURALIST_OBSERVATIONS_TAXON_CUSTOM_DESC" />
 
                 <field name="count"
                        type="number"
@@ -64,7 +56,7 @@
                        label="MOD_INATURALIST_OBSERVATIONS_COUNT_LABEL"
                        description="MOD_INATURALIST_OBSERVATIONS_COUNT_DESC" />
 
-                <field name="cache_time"
+                <field name="cache_duration"
                        type="number"
                        default="86400"
                        label="MOD_INATURALIST_OBSERVATIONS_CACHE_DURATION_LABEL"
