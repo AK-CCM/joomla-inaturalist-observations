@@ -14,7 +14,9 @@ class ModINatHelper
         $taxonFilter  = $params->get('taxon_filter', '');
         $customTaxon  = trim($params->get('taxon_custom'));
         $count        = (int) $params->get('count', 5);
-        $cacheSeconds = (int) $params->get('cache_duration', 86400);
+
+        // Cache Duration wird jetzt in Stunden eingegeben -> umrechnen in Sekunden
+        $cacheSeconds = (int) $params->get('cache_duration', 24) * 3600;
 
         if (!$userId) {
             return [];
@@ -29,8 +31,9 @@ class ModINatHelper
 
         // Generate a unique cache key based on username, taxon filter, custom taxon ID, count, and language
         $lang     = JFactory::getLanguage()->getTag();
-        $cacheKey = 'inat_obs_' . md5($username . '|' . $taxonFilter . '|' . $customTaxonId . '|' . $count . '|' . $lang);
-        $cache    = Factory::getContainer()->get(CacheControllerFactoryInterface::class)
+        $cacheKey = 'inat_obs_' . md5($userId . '|' . $taxonFilter . '|' . $customTaxon . '|' . $count . '|' . $lang);
+
+        $cache = Factory::getContainer()->get(CacheControllerFactoryInterface::class)
                    ->createCacheController('callback', ['defaultgroup' => 'mod_inaturalist']);
 
         return $cache->get(
