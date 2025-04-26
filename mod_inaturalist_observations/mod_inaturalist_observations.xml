@@ -57,10 +57,12 @@
                        description="MOD_INATURALIST_OBSERVATIONS_COUNT_DESC" />
 
                 <field name="cache_duration"
-                       type="number"
-                       default="86400"
-                       label="MOD_INATURALIST_OBSERVATIONS_CACHE_DURATION_LABEL"
-                       description="MOD_INATURALIST_OBSERVATIONS_CACHE_DURATION_DESC" />
+       			type="number"
+       			default="24"
+       			label="MOD_INATURALIST_OBSERVATIONS_CACHE_DURATION_LABEL"
+       			description="MOD_INATURALIST_OBSERVATIONS_CACHE_DURATION_DESC"
+       			min="1"
+       			step="1" />
             </fieldset>
         </fields>
     </config>
