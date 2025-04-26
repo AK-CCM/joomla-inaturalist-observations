@@ -27,7 +27,9 @@ class ModINatHelper
             $taxonId = $taxonFilter;
         }
 
-        $cacheKey = 'inat_obs_' . md5($userId . $taxonId . $count);
+        // Generate a unique cache key based on username, taxon filter, custom taxon ID, count, and language
+        $lang     = JFactory::getLanguage()->getTag();
+        $cacheKey = 'inat_obs_' . md5($username . '|' . $taxonFilter . '|' . $customTaxonId . '|' . $count . '|' . $lang);
         $cache    = Factory::getContainer()->get(CacheControllerFactoryInterface::class)
                    ->createCacheController('callback', ['defaultgroup' => 'mod_inaturalist']);
 
