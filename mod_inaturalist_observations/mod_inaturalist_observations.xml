@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" version="4.0" client="site" method="upgrade">
-    <name>mod_inaturalist_observations</name>
+    <name>MOD_INATURALIST_OBSERVATIONS</name>
     <title>iNaturalist Observations</title>
     <version>1.0.0</version>
     <description>Displays recent iNaturalist observations from a specific user and optionally filtered by taxon.</description>
