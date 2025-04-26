@@ -57,7 +57,10 @@ class ModINatHelper
                     $response = $http->get($url);
                     $body = json_decode($response->body, true);
 
-                    return ['observations' => $body['results'] ?? [], 'avatar' => $userAvatar];
+                    return [
+                        'observations' => $body['results'] ?? [],
+                        'avatar' => $userAvatar,
+                    ];
                 } catch (Exception $e) {
                     return [];
                 }
