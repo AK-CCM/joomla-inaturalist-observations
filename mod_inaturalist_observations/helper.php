@@ -2,15 +2,15 @@
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\Cache\CacheControllerFactoryInterface;
 use Joomla\CMS\Http\HttpFactory;
+use Joomla\CMS\Cache\CacheControllerFactoryInterface;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
 
 class ModINatHelper
 {
-    public static function getObservations($params)
+    public static function getData($params)
     {
         $userId       = trim($params->get('username'));
         $taxonFilter  = $params->get('taxon_filter', '');
@@ -19,7 +19,7 @@ class ModINatHelper
         $cacheSeconds = (int) $params->get('cache_duration', 86400);
 
         if (!$userId) {
-            return [];
+            return ['observations' => [], 'avatar' => '', 'username' => $userId];
         }
 
         $taxonId = '';
@@ -33,59 +33,19 @@ class ModINatHelper
         $cache    = Factory::getContainer()->get(CacheControllerFactoryInterface::class)
                    ->createCacheController('callback', ['defaultgroup' => 'mod_inaturalist']);
 
-        return $cache->get(
+        $results = $cache->get(
             function () use ($userId, $taxonId, $count) {
                 $http = HttpFactory::getHttp();
-                $basePath = JPATH_CACHE . '/mod_inaturalist_observations';
+                $url = 'https://api.inaturalist.org/v1/observations?user_id=' . urlencode($userId)
+                     . '&order_by=observed_on&order=desc&per_page=' . $count;
 
-                // Sicherstellen, dass Cache-Verzeichnis existiert
-                if (!Folder::exists($basePath)) {
-                    Folder::create($basePath);
+                if ($taxonId !== '') {
+                    $url .= '&taxon_id=' . $taxonId;
                 }
 
                 try {
-                    // 1. Benutzerinfos holen (für Avatar)
-                    $userInfoUrl = 'https://api.inaturalist.org/v1/users/' . urlencode($userId);
-                    $userResponse = $http->get($userInfoUrl);
-                    $userBody = json_decode($userResponse->body, true);
-                    $userAvatarUrl = $userBody['results'][0]['icon'] ?? '';
-
-                    // Benutzerbild lokal speichern
-                    $userAvatarLocal = '';
-                    if ($userAvatarUrl) {
-                        $userAvatarLocal = ModINatHelper::downloadImage($userAvatarUrl, $basePath, 'avatar_' . md5($userAvatarUrl) . '.jpg');
-                    }
-
-                    // 2. Beobachtungen holen
-                    $url = 'https://api.inaturalist.org/v1/observations?user_id=' . urlencode($userId)
-                        . '&order_by=observed_on&order=desc&per_page=' . $count;
-
-                    if ($taxonId !== '') {
-                        $url .= '&taxon_id=' . $taxonId;
-                    }
-
                     $response = $http->get($url);
-                    $body = json_decode($response->body, true);
-                    $observations = $body['results'] ?? [];
-
-                    // Für jede Beobachtung das Foto lokal speichern
-                    foreach ($observations as &$observation) {
-                        if (!empty($observation['photos'][0]['url'])) {
-                            $photoUrl = str_replace('square', 'medium', $observation['photos'][0]['url']);
-                            $photoFilename = 'obs_' . (int)$observation['id'] . '.jpg';
-                            $localPhoto = ModINatHelper::downloadImage($photoUrl, $basePath, $photoFilename);
-
-                            $observation['local_photo'] = $localPhoto;
-                        } else {
-                            $observation['local_photo'] = '';
-                        }
-                    }
-
-                    return [
-                        'avatar' => $userAvatarLocal,
-                        'observations' => $observations,
-                    ];
-
+                    return json_decode($response->body, true);
                 } catch (Exception $e) {
                     return [];
                 }
@@ -93,26 +53,65 @@ class ModINatHelper
             [$cacheKey],
             $cacheSeconds
         );
-    }
 
-    // Hilfsfunktion zum Herunterladen und Speichern eines Bildes
-    protected static function downloadImage($url, $savePath, $filename)
-    {
-        try {
-            $http = HttpFactory::getHttp();
-            $response = $http->get($url);
+        $observations = $results['results'] ?? [];
 
-            if ($response->code === 200) {
-                $fullPath = $savePath . '/' . $filename;
-                File::write($fullPath, $response->body);
+        $cachedObservations = [];
 
-                // Rückgabe: Pfad relativ zur Joomla-Seite (für <img src>)
-                return 'cache/mod_inaturalist_observations/' . $filename;
-            }
-        } catch (Exception $e) {
-            // Ignorieren, wenn Download fehlschlägt
+        $cachePath = JPATH_SITE . '/cache/mod_inaturalist_observations/';
+        if (!Folder::exists($cachePath)) {
+            Folder::create($cachePath);
         }
 
-        return '';
+        foreach ($observations as $observation) {
+            if (!empty($observation['photos'][0]['url'])) {
+                $photoUrl = str_replace('square', 'medium', $observation['photos'][0]['url']);
+                $localFilename = $cachePath . md5($photoUrl) . '.jpg';
+                $localRelPath = 'cache/mod_inaturalist_observations/' . md5($photoUrl) . '.jpg';
+
+                if (!File::exists($localFilename)) {
+                    try {
+                        $http = HttpFactory::getHttp();
+                        $response = $http->get($photoUrl);
+                        if ($response->code === 200) {
+                            File::write($localFilename, $response->body);
+                        }
+                    } catch (Exception $e) {
+                        // Fehler ignorieren
+                    }
+                }
+
+                $observation['local_photo'] = $localRelPath;
+            }
+            $cachedObservations[] = $observation;
+        }
+
+        // Benutzer-Avatar laden
+        $avatarUrl = '';
+        if (!empty($observations[0]['user']['icon_url'])) {
+            $avatarRemote = $observations[0]['user']['icon_url'];
+            $localAvatarFilename = $cachePath . md5($avatarRemote) . '.jpg';
+            $localAvatarRelPath = 'cache/mod_inaturalist_observations/' . md5($avatarRemote) . '.jpg';
+
+            if (!File::exists($localAvatarFilename)) {
+                try {
+                    $http = HttpFactory::getHttp();
+                    $response = $http->get($avatarRemote);
+                    if ($response->code === 200) {
+                        File::write($localAvatarFilename, $response->body);
+                    }
+                } catch (Exception $e) {
+                    // Fehler ignorieren
+                }
+            }
+
+            $avatarUrl = $localAvatarRelPath;
+        }
+
+        return [
+            'observations' => $cachedObservations,
+            'avatar' => $avatarUrl,
+            'username' => $userId,
+        ];
     }
 }
