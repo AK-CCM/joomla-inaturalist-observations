@@ -19,29 +19,29 @@ This module embeds the recent [iNaturalist.org](https://www.inaturalist.org) obs
 1. Download the latest ZIP package from the [Releases](https://github.com/AK-CCM/joomla-inaturalist-observations/releases) section.
 2. Install the module via the Joomla! admin interface under *Extensions > Manage > Install*.
 3. Go to *Extensions > Modules*, find **iNaturalist Observations**, and publish it in a suitable position.
-4. Configure the module options:
+4. Configure the module options.
    - Enter the iNaturalist username whose observations should be displayed. (required)
    - Optionally select an organism group e.g. Plants, Animals, Fungi including Lichens. (default: All Organisms)
    - Or choose **Custom** and enter a taxon ID to filter by that specific taxon.
    - Set how many recent observations should be displayed. (default: 5)
    - Define the cache duration in seconds. (default: 86400 seconds = 1 day)
 
-## 🔒 Schutz von Cache-Inhalten
+## 🔒 Protection of cache data
 
-Damit zwischengespeicherte Texte und Bilder von Suchmaschinen weder indexiert noch aufgerufen werden können, werden beim Installieren des Moduls im Cache-Verzeichnis eine `robots.txt` und eine `.htaccess` erstellt.
+To prevent search engines from indexing or accessing cached texts and images, the two files `robots.txt` and `.htaccess` will be created in the cache directory during the module installation.
 
-### Apache Webserver
+### Apache web server
 
-Falls die automatische Einrichtung der .htaccess-Datei mangels Berechtigungen nicht funktioniert, bitte die folgenden Zeilen manuell in die `.htaccess`-Datei im Cache-Verzeichnis einfügen:
+If the automatic setup of the .htaccess file doesn't work due to a lack of authorisations, please add the following lines manually to the .htaccess file in the cache directory:
 
 ```
-# Verhindert den direkten Zugriff auf alle Dateien im Cache-Verzeichnis
+# Prevents direct access to all files in the cache directory
 <Files *>
     Order Deny,Allow
     Deny from all
 </Files>
 
-# Verhindert das Indexieren und Anzeigen der Inhalte durch Suchmaschinen
+# Prevents the indexing and display of content by search engines
 <IfModule mod_headers.c>
     Header set X-Robots-Tag "noindex, nofollow, noarchive, nosnippet"
 </IfModule>
@@ -49,14 +49,14 @@ Falls die automatische Einrichtung der .htaccess-Datei mangels Berechtigungen ni
 
 ### nginx Webserver
 
-Der nginx Webserver unterstützt keine .htaccess-Dateien. Hier bitte folgende Regeln in die zentrale Konfigurationsdatei `/etc/nginx/nginx.conf` einfügen, um das Cache-Verzeichnis zu schützen:
+nginx web server does not support .htaccess files. Please add the following rules to the central configuration file `/etc/nginx/nginx.conf` to protect the cache directory:
 ```
 location /cache/mod_inaturalist_observations/ {
-    # Verhindert den Zugriff auf das Cache-Verzeichnis
+    # Prevents access to the cache directory
     deny all;  
-    # Gibt den HTTP-Fehlercode 403 zurück, wenn auf das Verzeichnis zugegriffen wird
+    # Returns the HTTP error code 403 if the directory is tried to be accessed
     return 403;
-    # Verhindert das Indexieren und Anzeigen der Inhalte durch Suchmaschinen
+    # Prevents search engines from indexing and displaying the content
     add_header X-Robots-Tag "noindex, nofollow, noarchive, nosnippet";
 }
 ```
