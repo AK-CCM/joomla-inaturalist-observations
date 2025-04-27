@@ -1,12 +1,10 @@
+# Verhindert den direkten Zugriff auf alle Dateien im Cache-Verzeichnis
+<Files *>
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+# Verhindert das Indexieren und Anzeigen der Inhalte durch Suchmaschinen
 <IfModule mod_headers.c>
     Header set X-Robots-Tag "noindex, nofollow, noarchive, nosnippet"
 </IfModule>
-
-# Zugriff auf alles außer Bildern verhindern
-<FilesMatch ".*\.(php|txt|html|json|xml)$">
-    Order allow,deny
-    Deny from all
-</FilesMatch>
-
-# Sicherheit: Directory-Listing verhindern
-Options -Indexes
