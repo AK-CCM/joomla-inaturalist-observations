@@ -1,0 +1,2 @@
+User-agent: *
+Disallow: /cache/mod_inaturalist_observations/
