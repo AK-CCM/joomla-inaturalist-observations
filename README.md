@@ -26,14 +26,49 @@ This module embeds the recent [iNaturalist.org](https://www.inaturalist.org) obs
    - Set how many recent observations should be displayed. (default: 5)
    - Define the cache duration in seconds. (default: 86400 seconds = 1 day)
 
-## ⚙️ Configuration Options
+## 🔒 Schutz von Cache-Inhalten
 
-| **Parameter**  | **Description**                                                                | **Default**  |
-|----------------|-------------------------------------------------------------|------------------|
-| `User ID`      | iNaturalist username to fetch observations from                                | *(required)* |
-| `Taxon Filter` | Filter by taxon group or custom taxon ID or leave blank to show all            | *All*        |
-| `Count`        | Number of recent observations to display                                       | `5`          |
-| `Cache Time`   | Cache duration in seconds                                                      | `86400`      |
+Damit zwischengespeicherte Texte und Bilder von Suchmaschinen weder indexiert noch aufgerufen werden können, werden beim Installieren des Moduls im Cache-Verzeichnis eine `robots.txt` und eine `.htaccess` erstellt.
+
+### Apache Webserver
+
+Falls die automatische Einrichtung der .htaccess-Datei mangels Berechtigungen nicht funktioniert, bitte die folgenden Zeilen manuell in die `.htaccess`-Datei im Cache-Verzeichnis einfügen:
+
+```
+# Verhindert den direkten Zugriff auf alle Dateien im Cache-Verzeichnis
+<Files *>
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+# Verhindert das Indexieren und Anzeigen der Inhalte durch Suchmaschinen
+<IfModule mod_headers.c>
+    Header set X-Robots-Tag "noindex, nofollow, noarchive, nosnippet"
+</IfModule>
+```
+
+### nginx Webserver
+
+Der nginx Webserver unterstützt keine .htaccess-Dateien. Hier bitte folgende Regeln in die zentrale Konfigurationsdatei `/etc/nginx/nginx.conf` einfügen, um das Cache-Verzeichnis zu schützen:
+```
+location /cache/mod_inaturalist_observations/ {
+    # Verhindert den Zugriff auf das Cache-Verzeichnis
+    deny all;  
+    # Gibt den HTTP-Fehlercode 403 zurück, wenn auf das Verzeichnis zugegriffen wird
+    return 403;
+    # Verhindert das Indexieren und Anzeigen der Inhalte durch Suchmaschinen
+    add_header X-Robots-Tag "noindex, nofollow, noarchive, nosnippet";
+}
+```
+
+## ⚙️ Module Options
+
+| **Parameter**  | **Description**                                 | **Default**      |
+|----------------|-------------------------------------------------|------------------|
+| `Username`     | iNaturalist username to fetch observations from | *(required)*     |
+| `Taxon Filter` | Filter by taxon group or custom taxon ID        | *All Organisms*  |
+| `Count`        | Number of recent observations to display        | `5`              |
+| `Cache Time`   | Cache duration in hours                         | `24`             |
 
 ## 🌍 Localization
 
