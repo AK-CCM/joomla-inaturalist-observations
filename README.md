@@ -70,11 +70,6 @@ location /cache/mod_inaturalist_observations/ {
 }
 ```
 
-## 🌍 Localization
-
-- 🇬🇧 `en-GB` (English)
-- 🇩🇪 `de-DE` (Deutsch)
-
 ## 📜 License
 
 This module is released under the [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.html).
