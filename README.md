@@ -103,4 +103,5 @@ The development of this module was supported by **ChatGPT** (OpenAI, GPT-4, Apri
 
 ## ⚖️ Trademark Disclaimer
 
-This repository is not affiliated with or endorsed by the Joomla! Project. It is neither supported nor guaranteed by Joomla! or Open Source Matters.
+This repository is not affiliated with or endorsed by the Joomla! Project or the iNaturalist platform.  
+It is neither supported nor guaranteed by Joomla!, Open Source Matters, or the California Academy of Sciences (iNaturalist).
