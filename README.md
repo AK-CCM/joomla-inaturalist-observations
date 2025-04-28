@@ -76,6 +76,6 @@ This module is released under the [GNU General Public License v3.0](https://www.
 
 ---
 
-## ⚖️ Joomla! Trademark Disclaimer
+## ⚖️ Trademark Disclaimer
 
 This repository is not affiliated with or endorsed by the Joomla! Project. It is neither supported nor guaranteed by Joomla! or Open Source Matters.
