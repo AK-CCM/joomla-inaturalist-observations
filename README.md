@@ -69,6 +69,9 @@ location /cache/mod_inaturalist_observations/ {
     add_header X-Robots-Tag "noindex, nofollow, noarchive, nosnippet";
 }
 ```
+## ✨ Acknowledgements
+
+The development of this module was supported by ***ChatGPT*** (OpenAI, GPT-4, April 2025 version). Assistance included caching strategies, GDPR-compliant design, privacy-oriented improvements and multilingual support.
 
 ## 📜 License
 
