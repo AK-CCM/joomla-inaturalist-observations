@@ -39,7 +39,7 @@ Asterisks mark required module options.
 
 To prevent search engines from indexing and accessing cached texts and images, the two files `robots.txt` and `.htaccess` are created in the cache directory when the module is installed. While robots.txt serves as a polite request to the search engines not to crawl and index the cached content, server rules (e.g. .htaccess) block access by force.
 
-### 🤖 robots.txt file
+### 🤖 robots.txt
 
 Even though direct access to the cache directory is already blocked via .htaccess file (Apache Webserver) or nginx configuration file, a robots.txt file is still included for additional protection:
 
@@ -48,7 +48,7 @@ User-agent: *  # The rule applies to all web crawlers
 Disallow: /  # Block crawlers from accessing the directory
 ```
 
-### 🪶 .htaccess file (Apache Webserver)
+### 🪶 .htaccess (Apache Webserver)
 
 If the automatic setup of the .htaccess file doesn't work due to a lack of authorisations, please add the following lines manually to the .htaccess file in the cache directory:
 
@@ -65,7 +65,7 @@ If the automatic setup of the .htaccess file doesn't work due to a lack of autho
 </IfModule>
 ```
 
-### 🚀 Configuration file (nginx Webserver)
+### 🚀 Configuration (nginx Webserver)
 
 nginx web server does not support .htaccess files. Please add the following rules to the central configuration file `/etc/nginx/nginx.conf` to protect the cache directory:
 ```
