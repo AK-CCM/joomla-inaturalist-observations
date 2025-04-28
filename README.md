@@ -17,14 +17,23 @@ This module embeds the recent [iNaturalist.org](https://www.inaturalist.org) obs
 ## 📦 Installation
 
 1. Download the latest ZIP package from the [Releases](https://github.com/AK-CCM/joomla-inaturalist-observations/releases) section.
-2. Install the module via the Joomla! admin interface under *Extensions > Manage > Install*.
-3. Go to *Extensions > Modules*, find **iNaturalist Observations**, and publish it in a suitable position.
-4. Configure the module options.
-   - Enter the iNaturalist username whose observations should be displayed. (required)
-   - Optionally select an organism group e.g. Plants, Animals, Fungi including Lichens. (default: All Organisms)
-   - Or choose **Custom** and enter a taxon ID to filter by that specific taxon.
-   - Set how many recent observations should be displayed. (default: 5)
-   - Define the cache duration in seconds. (default: 86400 seconds = 1 day)
+2. Install it from the Joomla backend (administration) under *System > Install > Extensions*.
+3. Consider the hints below in the section *Protection of cache data* and follow the instructions if needed.
+4. In your Joomla! backend go to *Content > Site Modules*, find **iNaturalist Observations**, and publish it in a suitable position.
+5. Configure the module options, especially the required iNaturalist Username, Number of Observations and Cache Duration (in hours).
+6. On Tab *Menu Assignment* define on which menu items and its pages the module should be diplayed.
+
+## ⚙️ Module Options
+
+| **Parameter**                | **Description**                                                                | **Default**     |
+|------------------------------|--------------------------------------------------------------------------------|-----------------|
+| `iNaturalist Username`*      | The username of the iNaturalist account whose observations should be displayed | `—`             |
+| `Taxon Filter`               | Optional: Organism group or custom taxon ID to filter the Observations         | `All Organisms` |
+| `iNaturalist Taxon ID`       | If ‘Custom’ is selected: The iNaturalist taxon ID to filter the observations   | `—`             |
+| `Number of observations`*    | The number of recent observations to display                                   | `5`             |
+| `Cache Duration (in hours)`* | How long the observation data should be cached before a new request is made    | `24`            |
+
+Asterisks mark required module options.
 
 ## 🔒 Protection of cache data
 
@@ -60,15 +69,6 @@ location /cache/mod_inaturalist_observations/ {
     add_header X-Robots-Tag "noindex, nofollow, noarchive, nosnippet";
 }
 ```
-
-## ⚙️ Module Options
-
-| **Parameter**  | **Description**                                 | **Default**      |
-|----------------|-------------------------------------------------|------------------|
-| `Username`     | iNaturalist username to fetch observations from | *(required)*     |
-| `Taxon Filter` | Filter by taxon group or custom taxon ID        | *All Organisms*  |
-| `Count`        | Number of recent observations to display        | `5`              |
-| `Cache Time`   | Cache duration in hours                         | `24`             |
 
 ## 🌍 Localization
 
