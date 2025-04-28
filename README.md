@@ -35,11 +35,20 @@ This module embeds the recent [iNaturalist.org](https://www.inaturalist.org) obs
 
 Asterisks mark required module options.
 
-## 🔒 Protection of cache data
+## 🔒 Protection of cached content
 
-To prevent search engines from indexing or accessing cached texts and images, the two files `robots.txt` and `.htaccess` will be created in the cache directory during the module installation.
+To prevent search engines from indexing and accessing cached texts and images, the two files `robots.txt` and `.htaccess` are created in the cache directory when the module is installed. While robots.txt serves as a polite request to the search engines not to crawl and index the cached content, server rules (e.g. .htaccess) block access by force. The inclusion of both measures increases robustness and minimises risks.
 
-### Apache web server
+### 🤖 robots.txt File
+
+Even though direct access to the cache directory is already blocked via .htaccess file (Apache Webserver) or nginx configuration file, a robots.txt file is still included for additional protection:
+
+```
+User-agent: *  # The rule applies to all web crawlers
+Disallow: /  # Block crawlers from accessing the directory
+```
+
+### 🪶 Apache Webserver
 
 If the automatic setup of the .htaccess file doesn't work due to a lack of authorisations, please add the following lines manually to the .htaccess file in the cache directory:
 
@@ -56,7 +65,7 @@ If the automatic setup of the .htaccess file doesn't work due to a lack of autho
 </IfModule>
 ```
 
-### nginx Webserver
+### 🚀 nginx Webserver
 
 nginx web server does not support .htaccess files. Please add the following rules to the central configuration file `/etc/nginx/nginx.conf` to protect the cache directory:
 ```
@@ -69,6 +78,7 @@ location /cache/mod_inaturalist_observations/ {
     add_header X-Robots-Tag "noindex, nofollow, noarchive, nosnippet";
 }
 ```
+
 ## 📜 License
 
 This module is released under the [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.html).
