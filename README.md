@@ -7,7 +7,7 @@ This module embeds the recent [iNaturalist.org](https://www.inaturalist.org) obs
 ## 🌿 Features
 
 - Displays latest observations from a specific iNaturalist user
-- Optional filter by taxon group or custom taxon ID
+- Optional filter by organism group or custom taxon ID
 - Configurable number of observations
 - Server-side caching (configurable duration)
 - Fully GDPR compliant
