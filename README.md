@@ -18,9 +18,9 @@ This module embeds the recent [iNaturalist.org](https://www.inaturalist.org) obs
 
 1. Download the latest ZIP package from the [Releases](https://github.com/AK-CCM/joomla-inaturalist-observations/releases) section.
 2. Install it from the Joomla backend (administration) under *System > Install > Extensions*.
-3. Consider the hints below in the section *Protection of cache data* and follow the instructions if needed.
+3. Consider the hints below in the section *Protection of cached centent* and follow the instructions if needed.
 4. In your Joomla! backend go to *Content > Site Modules*, find **iNaturalist Observations**, and publish it in a suitable position.
-5. Configure the module options, especially the required iNaturalist Username, Number of Observations and Cache Duration (in hours).
+5. Configure the module options, especially the required `iNaturalist Username`, `Number of Observations` and `Cache Duration (in hours)`.
 6. On Tab *Menu Assignment* define on which menu items and its pages the module should be diplayed.
 
 ## ⚙️ Module Options
@@ -37,9 +37,9 @@ Asterisks mark required module options.
 
 ## 🔒 Protection of cached content
 
-To prevent search engines from indexing and accessing cached texts and images, the two files `robots.txt` and `.htaccess` are created in the cache directory when the module is installed. While robots.txt serves as a polite request to the search engines not to crawl and index the cached content, server rules (e.g. .htaccess) block access by force. The inclusion of both measures increases robustness and minimises risks.
+To prevent search engines from indexing and accessing cached texts and images, the two files `robots.txt` and `.htaccess` are created in the cache directory when the module is installed. While robots.txt serves as a polite request to the search engines not to crawl and index the cached content, server rules (e.g. .htaccess) block access by force.
 
-### 🤖 robots.txt File
+### 🤖 robots.txt file
 
 Even though direct access to the cache directory is already blocked via .htaccess file (Apache Webserver) or nginx configuration file, a robots.txt file is still included for additional protection:
 
@@ -48,7 +48,7 @@ User-agent: *  # The rule applies to all web crawlers
 Disallow: /  # Block crawlers from accessing the directory
 ```
 
-### 🪶 Apache Webserver
+### 🪶 .htaccess file (Apache Webserver)
 
 If the automatic setup of the .htaccess file doesn't work due to a lack of authorisations, please add the following lines manually to the .htaccess file in the cache directory:
 
@@ -65,7 +65,7 @@ If the automatic setup of the .htaccess file doesn't work due to a lack of autho
 </IfModule>
 ```
 
-### 🚀 nginx Webserver
+### 🚀 Configuration file (nginx Webserver)
 
 nginx web server does not support .htaccess files. Please add the following rules to the central configuration file `/etc/nginx/nginx.conf` to protect the cache directory:
 ```
