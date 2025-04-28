@@ -27,9 +27,9 @@ This module embeds the recent [iNaturalist.org](https://www.inaturalist.org) obs
 
 | **Parameter**                | **Description**                                                                | **Default**     |
 |------------------------------|--------------------------------------------------------------------------------|-----------------|
-| `iNaturalist Username`*      | The username of the iNaturalist account whose observations should be displayed | `—`             |
+| `iNaturalist Username`*      | The username of the iNaturalist account whose observations should be displayed | `<empty>`       |
 | `Taxon Filter`               | Optional: Organism group or custom taxon ID to filter the Observations         | `All Organisms` |
-| `iNaturalist Taxon ID`       | If ‘Custom’ is selected: The iNaturalist taxon ID to filter the observations   | `—`             |
+| `iNaturalist Taxon ID`       | If ‘Custom’ is selected: The iNaturalist taxon ID to filter the observations   | `<empty>`       |
 | `Number of observations`*    | The number of recent observations to display                                   | `5`             |
 | `Cache Duration (in hours)`* | How long the observation data should be cached before a new request is made    | `24`            |
 
