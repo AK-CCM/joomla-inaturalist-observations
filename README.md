@@ -79,11 +79,24 @@ location /cache/mod_inaturalist_observations/ {
 }
 ```
 
+## 📄 Suggested text for privacy policies
+
+```
+iNaturalist
+
+This website includes content (e.g. images and metadata of observed organisms) from iNaturalist. This is an online platform for observing nature where users worldwide can document and share findings of plants, animals and other organisms. The provider is the California Academy of Sciences, 55 Music Concourse Dr, San Francisco, CA 94118, USA.
+
+However, the content is not loaded directly from the provider's servers, but is first stored temporarily on our own web server (caching) and then delivered from there. This prevents a direct connection to iNaturalist servers being established when the content is accessed and, for example, your IP address being transmitted.
+
+Please note that when you click on linked observations or the link to all observations of the website operator, a direct connection to the iNaturalist servers is established. Personal data (such as your IP address) may be collected and processed by the provider. We have no influence on this data processing.
+
+You can find more information on data protection at iNaturalist here: https://www.inaturalist.org/pages/privacy.
+```
+
 ## 📜 License
 
 This module is released under the [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.html).
 
----
 ## ✨ Acknowledgements
 
 The development of this module was supported by **ChatGPT** (OpenAI, GPT-4, April 2025 version). Assistance included caching strategies, GDPR-compliant design, privacy-oriented improvements and multilingual support.
