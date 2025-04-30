@@ -2,8 +2,6 @@
 
 This module embeds the recent [iNaturalist.org](https://www.inaturalist.org) observations of a specific user in your Joomla! v4/5 based website. You can optionally filter the results by taxon groups such as plants, fungi & lichens, animals, or a custom taxon (ID needed). The module uses server-side caching to reduce API calls, is fully GDPR compliant, and includes multilingual support.
 
-<!-- ![Example Screenshot](screenshot.png) Optional -->
-
 ## 🌿 Features
 
 - Displays latest observations from a specific iNaturalist user
@@ -13,6 +11,8 @@ This module embeds the recent [iNaturalist.org](https://www.inaturalist.org) obs
 - Fully GDPR compliant
 - Multilingual (English and German)
 - GPL v3 licensed
+
+<img src="docs/images/2025-04-30-J53-Frontend--Helix-Ultimate--Spalte-rechts--iNaturalist-Beobachtungen.jpg" alt="Screenshot des Moduls" width="295" hight="555">
 
 ## 📦 Installation
 
