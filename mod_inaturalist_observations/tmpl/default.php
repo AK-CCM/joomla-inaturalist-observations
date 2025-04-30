@@ -58,10 +58,10 @@ if (empty($observations)) {
                     </a>
                 </h5>
                 <?php if ($date) : ?>
-                    <div class="text-muted small"><?php echo $date; ?></div>
+                    <div class="small"><?php echo $date; ?></div>
                 <?php endif; ?>
                 <?php if ($place) : ?>
-                    <div class="text-muted small"><?php echo $place; ?></div>
+                    <div class="small"><?php echo $place; ?></div>
                 <?php endif; ?>
             </div>
         </div>
