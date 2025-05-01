@@ -35,13 +35,13 @@ This module embeds the recent [iNaturalist.org](https://www.inaturalist.org) obs
 
 Asterisks mark required module options.
 
-## 🔍 Obtain a taxon ID
+## 🔍 Obtain a Taxon ID
 
 Open the [page with the observations](https://www.inaturalist.org/observations) on iNutarlist.org and enter the name of the desired taxon in the search field (1). This can be either the scientific name or the name in a national language; often fragments are enough for the taxon you are looking for to appear in the list of suggestions. Now click/tap on the desired taxon (2) and search for the parameter ‘taxon_id’ in the address bar. The sequence of digits (3) there is the taxon ID that must be stored in the module option `iNaturalist Taxon ID` for customised filtering of the observations.
 
 <img src="docs/images/2025-05-01-iNaturalist.org-Beobachtungen-Hygrophoraceae-Taxon-ID.jpg" alt="The taxon ID in the address bar on the iNaturalist observations page" width="600">
 
-## 🔒 Protection of cached content
+## 🔒 Protection of Cached Content
 
 To prevent search engines from indexing and accessing cached texts and images, the two files `robots.txt` and `.htaccess` are created in the cache directory when the module is installed. While robots.txt serves as a polite request to the search engines not to crawl and index the cached content, server rules (e.g. .htaccess) block access by force.
 
@@ -85,7 +85,7 @@ location /cache/mod_inaturalist_observations/ {
 }
 ```
 
-## 📄 Draft for privacy policies
+## 📄 Privacy Policy Draft
 
 ```
 iNaturalist
