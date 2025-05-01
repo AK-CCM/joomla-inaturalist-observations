@@ -12,7 +12,7 @@ This module embeds the recent [iNaturalist.org](https://www.inaturalist.org) obs
 - Multilingual (English and German)
 - GPL v3 licensed
 
-<img src="docs/images/2025-04-30-J53-Frontend--Helix-Ultimate--Spalte-rechts--iNaturalist-Beobachtungen.jpg" alt="Screenshot des Moduls" width="295" hight="555">
+<img src="docs/images/2025-04-30-J53-Frontend--Helix-Ultimate--Spalte-rechts--iNaturalist-Beobachtungen.jpg" alt="Screenshot des Moduls" width="350">
 
 ## 📦 Installation
 
@@ -39,7 +39,7 @@ Asterisks mark required module options.
 
 Open the [page with the observations](https://www.inaturalist.org/observations) on iNutarlist.org and enter the name of the desired taxon in the search field (1). This can be either the scientific name or the name in a national language; often fragments are enough for the taxon you are looking for to appear in the list of suggestions. Now click/tap on the desired taxon (2) and search for the parameter ‘taxon_id’ in the address bar. The sequence of digits (3) there is the taxon ID that must be stored in the module option `iNaturalist Taxon ID` for customised filtering of the observations.
 
-<img src="docs/images/2025-05-01-iNaturalist.org-Beobachtungen-Hygrophoraceae-Taxon-ID.jpg" alt="The taxon ID in the address bar on the iNaturalist observations page" width="" hight="">
+<img src="docs/images/2025-05-01-iNaturalist.org-Beobachtungen-Hygrophoraceae-Taxon-ID.jpg" alt="The taxon ID in the address bar on the iNaturalist observations page" width="600">
 
 ## 🔒 Protection of cached content
 
@@ -85,7 +85,7 @@ location /cache/mod_inaturalist_observations/ {
 }
 ```
 
-## 📄 Suggested text for privacy policies
+## 📄 Draft for privacy policies
 
 ```
 iNaturalist
