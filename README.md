@@ -1,25 +1,25 @@
 # iNaturalist Observations Module for Joomla!
 
-This module embeds the recent [iNaturalist.org](https://www.inaturalist.org) observations of a specific user in your Joomla! v4/5 based website. You can optionally filter the results by taxon groups such as plants, fungi & lichens, animals, or a custom taxon (ID needed). The module uses server-side caching to reduce API calls, is fully GDPR compliant, and includes multilingual support.
+This module embeds the recent [iNaturalist.org](https://www.inaturalist.org) observations of a specific user in your Joomla!&nbsp;v4/5 based website. You can optionally filter the results by taxon groups such as plants, fungi&nbsp;& lichens, animals, or a custom taxon (ID needed). The module uses server-side caching to reduce API calls, is fully GDPR compliant, and includes multilingual support.
 
 ## 🌿 Features
 
 - Displays latest observations from a specific iNaturalist user
-- Optional filter by organism group or custom taxon ID
+- Optional filter by organism group or custom taxon&nbsp;ID
 - Configurable number of observations
 - Server-side caching (configurable duration)
 - Fully GDPR compliant
 - Multilingual (English and German)
-- GPL v3 licensed
+- GPL&nbsp;v3 licensed
 
 <img src="docs/images/2025-04-30-J53-Frontend--Helix-Ultimate--Spalte-rechts--iNaturalist-Beobachtungen.jpg" alt="Screenshot des Moduls" width="350">
 
 ## 📦 Installation
 
 1. Download the latest ZIP package from the [Releases](https://github.com/AK-CCM/joomla-inaturalist-observations/releases) section.
-2. Install it from the Joomla backend (administration) under *System > Install > Extensions*.
+2. Install it from the Joomla backend (administration) under *System&nbsp;> Install&nbsp;> Extensions*.
 3. Consider the hints below in the section *Protection of cached centent* and follow the instructions if needed.
-4. In your Joomla! backend go to *Content > Site Modules*, find **iNaturalist Observations**, and publish it in a suitable position.
+4. In your Joomla! backend go to *Content&nbsp;> Site Modules*, find **iNaturalist Observations**, and publish it in a suitable position.
 5. Configure the module options, especially the required `iNaturalist Username`, `Number of Observations` and `Cache Duration (in hours)`.
 6. On Tab *Menu Assignment* define on which menu items and its pages the module should be diplayed.
 
@@ -37,13 +37,13 @@ Asterisks mark required module options.
 
 ## 🔍 Obtain a Taxon ID
 
-Open the [page with the observations](https://www.inaturalist.org/observations) on iNutarlist.org and enter the name of the desired taxon in the search field (1). This can be either the scientific name or the name in a national language; often fragments are enough for the taxon you are looking for to appear in the list of suggestions. Now click/tap on the desired taxon (2) and search for the parameter ‘taxon_id’ in the address bar. The sequence of digits (3) there is the taxon ID that must be stored in the module option `iNaturalist Taxon ID` for customised filtering of the observations.
+Open the [page with the observations](https://www.inaturalist.org/observations) on iNutarlist.org and enter the name of the desired taxon in the search field&nbsp;(1). This can be either the scientific name or the name in a national language; often fragments are enough for the taxon you are looking for to appear in the list of suggestions. Now click/tap on the desired taxon&nbsp;(2) and search for the parameter ‘taxon_id’ in the address bar. The sequence of digits&nbsp;(3) there is the taxon ID that must be stored in the module option `iNaturalist Taxon ID` for customised filtering of the observations.
 
 <img src="docs/images/2025-05-01-iNaturalist.org-Beobachtungen-Hygrophoraceae-Taxon-ID.jpg" alt="The taxon ID in the address bar on the iNaturalist observations page" width="600">
 
 ## 🔒 Protection of Cached Content
 
-To prevent search engines from indexing and accessing cached texts and images, the two files `robots.txt` and `.htaccess` are created in the cache directory when the module is installed. While robots.txt serves as a polite request to the search engines not to crawl and index the cached content, server rules (e.g. .htaccess) block access by force.
+To prevent search engines from indexing and accessing cached texts and images, the two files `robots.txt` and `.htaccess` are created in the cache directory when the module is installed. While robots.txt serves as a polite request to the search engines not to crawl and index the cached content, server rules (e.g.&nbsp;.htaccess) block access by force.
 
 ### 🤖 robots.txt
 
@@ -73,7 +73,7 @@ If the automatic setup of the .htaccess file doesn't work due to a lack of autho
 
 ### 🚀 Configuration (nginx Webserver)
 
-nginx web server does not support .htaccess files. Please add the following rules to the central configuration file `/etc/nginx/nginx.conf` to protect the cache directory:
+nginx webserver does not support .htaccess files. Please add the following rules to the central configuration file `/etc/nginx/nginx.conf` to protect the cache directory:
 ```
 location /cache/mod_inaturalist_observations/ {
     # Prevents access to the cache directory
@@ -103,7 +103,7 @@ You can find more information on data protection at iNaturalist here: https://ww
 
 This module is released under the [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.html).
 
-## ✨ What's next?
+## ✨ What's Next?
 
 This module works as intended, but I won’t be actively developing it further. I’m not a professional developer, and without the help of ChatGPT (OpenAI GPT-4), I wouldn’t have been able to create it.
 
