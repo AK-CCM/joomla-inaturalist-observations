@@ -103,9 +103,11 @@ You can find more information on data protection at iNaturalist here: https://ww
 
 This module is released under the [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.html).
 
-## ✨ Acknowledgements
+## ✨ What's next?
 
-The development of this module was supported by **ChatGPT** (OpenAI, GPT-4, April 2025 version). Assistance included caching strategies, GDPR-compliant design, privacy-oriented improvements and multilingual support.
+This module works as intended, but I won’t be actively developing it further. I’m not a professional developer, and without the help of ChatGPT (OpenAI GPT-4), I wouldn’t have been able to create it.
+
+If you find it useful and want to improve or extend it, feel free to fork the repository. While I won’t be adding new features, I hope the module can still be valuable to the Joomla! and iNaturalist communities.
 
 ## ⚖️ Trademark Disclaimer
 
