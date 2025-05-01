@@ -39,7 +39,7 @@ Asterisks mark required module options.
 
 Open the [page with the observations](https://www.inaturalist.org/observations) on iNutarlist.org and enter the name of the desired taxon in the search field&nbsp;(1). This can be either the scientific name or the name in a national language; often fragments are enough for the taxon you are looking for to appear in the list of suggestions. Now click/tap on the desired taxon&nbsp;(2) and search for the parameter ‘taxon_id’ in the address bar. The sequence of digits&nbsp;(3) there is the taxon ID that must be stored in the module option `iNaturalist Taxon ID` for customised filtering of the observations.
 
-<img src="docs/images/2025-05-01-iNaturalist.org-Beobachtungen-Hygrophoraceae-Taxon-ID.jpg" alt="The taxon ID in the address bar on the iNaturalist observations page" width="600">
+<img src="docs/images/2025-05-01-iNaturalist.org-Beobachtungen-Hygrophoraceae-Taxon-ID-en.jpg" alt="The taxon ID in the address bar on the iNaturalist observations page" width="720">
 
 ## 🔒 Protection of Cached Content
 
