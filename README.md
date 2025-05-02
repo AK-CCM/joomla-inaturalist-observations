@@ -114,3 +114,5 @@ If you find it useful and want to improve or extend it, feel free to fork the re
 
 This repository is not affiliated with or endorsed by the Joomla! Project or the iNaturalist platform.  
 It is neither supported nor guaranteed by Joomla!, Open Source Matters, or the California Academy of Sciences (iNaturalist).
+
+<!-- Topics: joomla-module joomla4 joomla5 inaturalist nature-observations citizen-science gplv3 open-source php -->
