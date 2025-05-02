@@ -29,15 +29,21 @@ class ModINatHelper
             $taxonId = $taxonFilter;
         }
 
-        $cacheKey = 'inat_obs_' . md5($userId . $taxonId . $count);
+        // Sprache des aktuellen Nutzers ermitteln (Frontend-Sprache)
+        $lang = Factory::getLanguage();
+        $joomlaLang = $lang->getTag(); // z.B. 'de-DE' oder 'en-GB'
+        $locale = substr($joomlaLang, 0, 2); // 'de' oder 'en'
+
+        $cacheKey = 'inat_obs_' . md5($userId . $taxonId . $count . $locale);
         $cache    = Factory::getContainer()->get(CacheControllerFactoryInterface::class)
                    ->createCacheController('callback', ['defaultgroup' => 'mod_inaturalist']);
 
         $results = $cache->get(
-            function () use ($userId, $taxonId, $count) {
+            function () use ($userId, $taxonId, $count, $locale) {
                 $http = HttpFactory::getHttp();
                 $url = 'https://api.inaturalist.org/v1/observations?user_id=' . urlencode($userId)
-                     . '&order_by=observed_on&order=desc&per_page=' . $count;
+                     . '&order_by=observed_on&order=desc&per_page=' . $count
+                     . '&locale=' . $locale;
 
                 if ($taxonId !== '') {
                     $url .= '&taxon_id=' . $taxonId;
