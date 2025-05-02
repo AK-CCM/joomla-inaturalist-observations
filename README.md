@@ -10,6 +10,7 @@ This module embeds the recent [iNaturalist.org](https://www.inaturalist.org) obs
 - Server-side caching (configurable duration)
 - Fully GDPR compliant
 - Multilingual (English and German)
+- Automatic language selection based on the visitor’s site language (species names, dates)
 - GPL&nbsp;v3 licensed
 
 <img src="docs/images/2025-04-30-J53-Frontend--Helix-Ultimate--Spalte-rechts--iNaturalist-Beobachtungen.jpg" alt="Screenshot des Moduls" width="350">
