@@ -6,7 +6,7 @@
         <language tag="de-DE">iNaturalist-Beobachtungen</language>
     </title>
     <version>1.0.0</version>
-    <description>Displays recent iNaturalist observations from a specific user and optionally filtered by taxon.</description>
+    <description>MOD_INATURALIST_OBSERVATIONS_XML_DESCRIPTION</description>
 
     <author>Andreas Kunze</author>
     <creationDate>2025-04-22</creationDate>
