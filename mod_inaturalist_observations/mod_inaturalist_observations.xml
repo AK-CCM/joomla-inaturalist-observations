@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="module" version="4.0" client="site" method="upgrade">
+<extension type="module" version="1.0" client="site" method="upgrade">
     <name>MOD_INATURALIST_OBSERVATIONS</name>
     <title>
         <language tag="en-GB">iNaturalist Observations</language>
         <language tag="de-DE">iNaturalist-Beobachtungen</language>
     </title>
     <version>1.0.0</version>
-    <description>MOD_INATURALIST_OBSERVATIONS_XML_DESCRIPTION</description>
-
+    <description>
+        <language tag="en-GB">Displays recent iNaturalist observations from a user, optionally filtered by taxon.</language>
+        <language tag="de-DE">Zeigt aktuelle iNaturalist-Beobachtungen eines Nutzers an, optional gefiltert nach Taxon.</language>
+    </description>
+    
     <author>Andreas Kunze</author>
     <creationDate>2025-04-22</creationDate>
     <authorUrl>https://github.com/AK-CCM/joomla-inaturalist-observations</authorUrl>
@@ -69,11 +72,4 @@
             </fieldset>
         </fields>
     </config>
-
-    <default>
-        <title>
-            <language tag="en-GB">iNaturalist Observations</language>
-            <language tag="de-DE">iNaturalist-Beobachtungen</language>
-        </title>
-    </default>
 </extension>
