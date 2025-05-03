@@ -56,12 +56,14 @@
                 <field name="count"
                        type="number"
                        default="5"
+                       required="true"
                        label="MOD_INATURALIST_OBSERVATIONS_COUNT_LABEL"
                        description="MOD_INATURALIST_OBSERVATIONS_COUNT_DESC" />
 
                 <field name="cache_duration"
                        type="number"
                        default="24"
+                       required="true"
                        label="MOD_INATURALIST_OBSERVATIONS_CACHE_DURATION_LABEL"
                        description="MOD_INATURALIST_OBSERVATIONS_CACHE_DURATION_DESC"
                        min="1"
