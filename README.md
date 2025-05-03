@@ -13,7 +13,7 @@ This module embeds the recent [iNaturalist.org](https://www.inaturalist.org) obs
 - Automatic language selection based on the visitor’s site language (species names, dates)
 - GPL&nbsp;v3 licensed
 
-<img src="docs/images/2025-05-02-J53-frontend-Helix-Ultimate-column-right-iNaturalist-observations.png" alt="Screenshot of the iNaturalist Observations Module for Joomla!" width="350">
+<img src="docs/images/2025-05-02-J53-frontend-Helix-Ultimate-column-right-iNaturalist-observations.jpg" alt="Screenshot of the iNaturalist Observations Module for Joomla!" width="350">
 
 ## 📦 Installation
 
@@ -40,7 +40,7 @@ Asterisks mark required module options.
 
 Open the [page with the observations](https://www.inaturalist.org/observations) on iNutarlist.org and enter the name of the desired taxon in the search field&nbsp;(1). This can be either the scientific name or the name in a national language; often fragments are enough for the taxon you are looking for to appear in the list of suggestions. Now click/tap on the desired taxon&nbsp;(2) and search for the parameter ‘taxon_id’ in the address bar. The sequence of digits&nbsp;(3) there is the taxon ID that must be stored in the module option `iNaturalist Taxon ID` for customised filtering of the observations.
 
-<img src="docs/images/2025-05-02-iNaturalist.org-observations-Hygrophoraceae-taxon_id.png" alt="The taxon ID in the address bar of the iNaturalist observations page" width="600">
+<img src="docs/images/2025-05-02-iNaturalist.org-observations-Hygrophoraceae-taxon_id.jpg" alt="The taxon ID in the address bar of the iNaturalist observations page" width="600">
 
 ## 🔒 Protection of Cached Content
 
