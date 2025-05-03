@@ -1,6 +1,6 @@
 # iNaturalist Observations Module for Joomla!
 
-This module embeds the recent [iNaturalist.org](https://www.inaturalist.org) observations of a specific user in your Joomla!&nbsp;v4/5 based website. You can optionally filter the results by taxon groups such as plants, fungi&nbsp;& lichens, animals, or a custom taxon (ID needed). The module uses server-side caching to reduce API calls, is fully GDPR compliant, and includes multilingual support.
+This module embeds the recent [iNaturalist.org](https://www.inaturalist.org) observations of a specific user in your Joomla!&nbsp;v4/5 based website. You can optionally filter the results by taxon groups such as Plants, Fungi&nbsp;& Lichens, Animals, or a custom taxon (ID needed). The module uses server-side caching to reduce API calls, is fully GDPR compliant, and includes multilingual support.
 
 ## 🌿 Features
 
@@ -26,19 +26,19 @@ This module embeds the recent [iNaturalist.org](https://www.inaturalist.org) obs
 
 ## ⚙️ Module Options
 
-| **Parameter**                | **Description**                                                                | **Default**     |
-|------------------------------|--------------------------------------------------------------------------------|-----------------|
-| `iNaturalist Username`*      | The username of the iNaturalist account whose observations should be displayed | `<empty>`       |
-| `Taxon Filter`               | Optional: Organism group or custom taxon ID to filter the Observations         | `All Organisms` |
-| `iNaturalist Taxon ID`       | If ‘Custom’ is selected: The iNaturalist taxon ID to filter the observations   | `<empty>`       |
-| `Number of observations`*    | The number of recent observations to display                                   | `5`             |
-| `Cache Duration (in hours)`* | How long the observation data should be cached before a new request is made    | `24`            |
+| **Parameter**                | **Description**                                                                     | **Default**     |
+|------------------------------|-------------------------------------------------------------------------------------|-----------------|
+| `iNaturalist Username`*      | The username of the iNaturalist account whose observations should be displayed      | `<empty>`       |
+| `Taxon Filter`               | Optional: Organism group or custom taxon ID to filter the Observations              | `All Organisms` |
+| `iNaturalist Taxon ID`       | The iNaturalist taxon ID to filter the observations (If ‘Custom’ is selected above) | `<empty>`       |
+| `Number of observations`*    | The number of recent observations to display                                        | `5`             |
+| `Cache Duration (in hours)`* | How long the observation data should be cached before a new request is made         | `24`            |
 
 Asterisks mark required module options.
 
 ## 🔍 Obtain a Taxon ID
 
-Open the [page with the observations](https://www.inaturalist.org/observations) on iNutarlist.org and enter the name of the desired taxon in the search field&nbsp;(1). This can be either the scientific name or the name in a national language; often fragments are enough for the taxon you are looking for to appear in the list of suggestions. Now click/tap on the desired taxon&nbsp;(2) and search for the parameter ‘taxon_id’ in the address bar. The sequence of digits&nbsp;(3) there is the taxon ID that must be stored in the module option `iNaturalist Taxon ID` for customised filtering of the observations.
+Open the [page with the observations](https://www.inaturalist.org/observations) on iNaturalist.org and enter the name of the desired taxon in the search field&nbsp;(1). This can be either the scientific name or the name in a national language; often fragments are enough for the taxon you are looking for to appear in the list of suggestions. Now click/tap on the desired taxon&nbsp;(2) and search for the parameter ‘taxon_id’ in the address bar. The sequence of digits&nbsp;(3) there is the taxon ID that must be stored in the module option `iNaturalist Taxon ID` for customised filtering of the observations.
 
 <img src="docs/images/2025-05-02-iNaturalist.org-observations-Hygrophoraceae-taxon_id.jpg" alt="The taxon ID in the address bar of the iNaturalist observations page" width="600">
 
