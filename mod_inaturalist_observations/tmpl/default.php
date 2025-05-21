@@ -29,9 +29,17 @@ if (empty($observations)) {
     $displayName = $commonName ?: $scientificName;
 
     $date = '';
-    if (!empty($observation['observed_on'])) {
-        $dateObject = new DateTime($observation['observed_on']);
-        $date = $dateObject->format('d. F Y');
+	if (!empty($observation['observed_on'])) {
+    $timestamp = strtotime($observation['observed_on']);
+    $locale = \JFactory::getLanguage()->getTag(); // e.g. 'de-DE' or 'en-GB'
+
+    $formatter = new \IntlDateFormatter(
+        $locale,
+        \IntlDateFormatter::LONG,
+        \IntlDateFormatter::NONE
+    );
+
+    $date = $formatter->format($timestamp);
     }
 
     $place = !empty($observation['place_guess']) ? htmlspecialchars($observation['place_guess'], ENT_QUOTES, 'UTF-8') : '';
