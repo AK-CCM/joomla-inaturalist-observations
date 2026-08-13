@@ -2,122 +2,321 @@
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Http\HttpFactory;
 use Joomla\CMS\Cache\CacheControllerFactoryInterface;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Filesystem\File;
-use Joomla\CMS\Filesystem\Folder;
+use Joomla\Http\HttpFactory;
 
 class ModINatHelper
 {
+    /**
+     * Version des Daten-Caches.
+     *
+     * Bei Änderungen an der API-Abfrage oder Datenverarbeitung erhöhen,
+     * damit alte Cache-Einträge nicht weiterverwendet werden.
+     */
+    private const CACHE_VERSION = 'v2';
+
+    /**
+     * Ruft die iNaturalist-Beobachtungen ab und bereitet sie für
+     * die Darstellung im Modul auf.
+     *
+     * @param   \Joomla\Registry\Registry  $params  Modulparameter
+     *
+     * @return  array
+     */
     public static function getData($params)
     {
-        $userId       = trim($params->get('username'));
+        $userId       = trim((string) $params->get('username'));
         $taxonFilter  = $params->get('taxon_filter', '');
-        $customTaxon  = trim($params->get('taxon_custom'));
-        $count        = (int) $params->get('count', 5);
-        $cacheSeconds = (int) $params->get('cache_duration', 86400);
+        $customTaxon  = trim((string) $params->get('taxon_custom'));
+        $count        = max(1, (int) $params->get('count', 5));
+        $cacheSeconds = max(0, (int) $params->get('cache_duration', 86400));
 
-        if (!$userId) {
-            return ['observations' => [], 'avatar' => '', 'username' => $userId];
+        if ($userId === '') {
+            return [
+                'observations' => [],
+                'avatar'       => '',
+                'username'     => '',
+            ];
         }
 
+        /*
+         * Taxon-ID ermitteln.
+         */
         $taxonId = '';
+
         if ($taxonFilter === 'custom' && is_numeric($customTaxon)) {
-            $taxonId = $customTaxon;
+            $taxonId = (string) $customTaxon;
         } elseif (is_numeric($taxonFilter)) {
-            $taxonId = $taxonFilter;
+            $taxonId = (string) $taxonFilter;
         }
 
-        // Sprache des aktuellen Nutzers ermitteln (Frontend-Sprache)
-        $lang = Factory::getLanguage();
-        $joomlaLang = $lang->getTag(); // z.B. 'de-DE' oder 'en-GB'
-        $locale = substr($joomlaLang, 0, 2); // 'de' oder 'en'
+        /*
+         * Sprache des aktuellen Frontend-Nutzers ermitteln.
+         */
+        $language   = Factory::getLanguage();
+        $joomlaLang = $language->getTag();
+        $locale     = substr($joomlaLang, 0, 2);
 
-        $cacheKey = 'inat_obs_' . md5($userId . $taxonId . $count . $locale);
-        $cache    = Factory::getContainer()->get(CacheControllerFactoryInterface::class)
-                   ->createCacheController('callback', ['defaultgroup' => 'mod_inaturalist']);
+        /*
+         * Cache-Lebensdauer.
+         *
+         * Die Modulkonfiguration verwendet Sekunden.
+         * Der Joomla-Cache erwartet Minuten.
+         */
+        $cacheLifetime = max(1, (int) ceil($cacheSeconds / 60));
 
-        $results = $cache->get(
-            function () use ($userId, $taxonId, $count, $locale) {
-                $http = HttpFactory::getHttp();
-                $url = 'https://api.inaturalist.org/v1/observations?user_id=' . urlencode($userId)
-                     . '&order_by=observed_on&order=desc&per_page=' . $count
-                     . '&locale=' . $locale;
+        /*
+         * Eindeutigen Cache-Key erzeugen.
+         *
+         * CACHE_VERSION verhindert, dass Einträge aus älteren
+         * Versionen des Helpers weiterverwendet werden.
+         */
+        $cacheKey = self::CACHE_VERSION . '_inat_obs_' . md5(
+            $userId
+            . '|'
+            . $taxonId
+            . '|'
+            . $count
+            . '|'
+            . $locale
+        );
+
+        /*
+         * HTTP-Client erzeugen.
+         *
+         * Joomla\Http\HttpFactory::getHttp() ist eine
+         * Instanzmethode.
+         */
+        $httpFactory = new HttpFactory();
+        $http        = $httpFactory->getHttp();
+
+        /*
+         * Callback zum Abruf der iNaturalist-Daten.
+         */
+        $loadObservations = function () use (
+            $http,
+            $userId,
+            $taxonId,
+            $count,
+            $locale
+        ) {
+            try {
+                $query = [
+                    'user_id'  => $userId,
+                    'order_by' => 'observed_on',
+                    'order'    => 'desc',
+                    'per_page' => $count,
+                    'locale'   => $locale,
+                ];
 
                 if ($taxonId !== '') {
-                    $url .= '&taxon_id=' . $taxonId;
+                    $query['taxon_id'] = $taxonId;
                 }
 
-                try {
-                    $response = $http->get($url);
-                    return json_decode($response->body, true);
-                } catch (Exception $e) {
+                $url = 'https://api.inaturalist.org/v1/observations?'
+                    . http_build_query(
+                        $query,
+                        '',
+                        '&',
+                        PHP_QUERY_RFC3986
+                    );
+
+                $response = $http->get($url);
+
+                if ($response->getStatusCode() !== 200) {
                     return [];
                 }
-            },
-            [$cacheKey],
-            $cacheSeconds
-        );
+
+                $body = (string) $response->getBody();
+
+                if ($body === '') {
+                    return [];
+                }
+
+                $data = json_decode($body, true);
+
+                if (
+                    json_last_error() !== JSON_ERROR_NONE
+                    || !is_array($data)
+                    || !isset($data['results'])
+                    || !is_array($data['results'])
+                ) {
+                    return [];
+                }
+
+                return $data;
+            } catch (\Throwable $e) {
+                return [];
+            }
+        };
+
+        /*
+         * iNaturalist-Daten laden.
+         */
+        if ($cacheSeconds > 0) {
+            $cacheControllerFactory = Factory::getContainer()
+                ->get(CacheControllerFactoryInterface::class);
+
+            $cacheController = $cacheControllerFactory->createCacheController(
+                'callback',
+                [
+                    'defaultgroup' => 'mod_inaturalist',
+                    'caching'      => true,
+                    'lifetime'     => $cacheLifetime,
+                ]
+            );
+
+            $results = $cacheController->get(
+                $loadObservations,
+                [],
+                $cacheKey
+            );
+        } else {
+            $results = $loadObservations();
+        }
+
+        if (!is_array($results)) {
+            $results = [];
+        }
 
         $observations = $results['results'] ?? [];
 
-        $cachedObservations = [];
-
-        $cachePath = JPATH_SITE . '/cache/mod_inaturalist_observations/';
-        if (!Folder::exists($cachePath)) {
-            Folder::create($cachePath);
+        if (!is_array($observations)) {
+            $observations = [];
         }
 
-        foreach ($observations as $observation) {
-            if (!empty($observation['photos'][0]['url'])) {
-                $photoUrl = str_replace('square', 'medium', $observation['photos'][0]['url']);
-                $localFilename = $cachePath . md5($photoUrl) . '.jpg';
-                $localRelPath = 'cache/mod_inaturalist_observations/' . md5($photoUrl) . '.jpg';
+        /*
+         * Verzeichnis für lokalen Bildcache erstellen.
+         */
+        $cachePath = JPATH_SITE . '/cache/mod_inaturalist_observations/';
 
-                if (!File::exists($localFilename)) {
+        if (!is_dir($cachePath)) {
+            if (
+                !mkdir($cachePath, 0755, true)
+                && !is_dir($cachePath)
+            ) {
+                $cachePath = '';
+            }
+        }
+
+        /*
+         * Beobachtungsfotos lokal zwischenspeichern.
+         */
+        $cachedObservations = [];
+
+        foreach ($observations as $observation) {
+            if (
+                $cachePath !== ''
+                && !empty($observation['photos'][0]['url'])
+            ) {
+                /*
+                 * iNaturalist liefert standardmäßig z. B.
+                 * eine "square"-URL.
+                 *
+                 * Für die Darstellung verwenden wir "medium".
+                 */
+                $photoUrl = str_replace(
+                    'square',
+                    'medium',
+                    (string) $observation['photos'][0]['url']
+                );
+
+                $filename = md5($photoUrl) . '.jpg';
+
+                $localFilename = $cachePath . $filename;
+
+                $localRelPath =
+                    'cache/mod_inaturalist_observations/' . $filename;
+
+                /*
+                 * Bild nur herunterladen, wenn es noch nicht
+                 * im lokalen Cache vorhanden ist.
+                 */
+                if (!is_file($localFilename)) {
                     try {
-                        $http = HttpFactory::getHttp();
                         $response = $http->get($photoUrl);
-                        if ($response->code === 200) {
-                            File::write($localFilename, $response->body);
+
+                        if ($response->getStatusCode() === 200) {
+                            $body = (string) $response->getBody();
+
+                            if ($body !== '') {
+                                file_put_contents(
+                                    $localFilename,
+                                    $body,
+                                    LOCK_EX
+                                );
+                            }
                         }
-                    } catch (Exception $e) {
-                        // Fehler ignorieren
+                    } catch (\Throwable $e) {
+                        // Fehler beim Bilddownload ignorieren.
                     }
                 }
 
-                $observation['local_photo'] = $localRelPath;
+                /*
+                 * Nur einen gültigen lokalen Bildpfad übergeben.
+                 */
+                if (is_file($localFilename)) {
+                    $observation['local_photo'] = $localRelPath;
+                }
             }
+
             $cachedObservations[] = $observation;
         }
 
-        // Benutzer-Avatar laden
+        /*
+         * Benutzer-Avatar laden.
+         */
         $avatarUrl = '';
-        if (!empty($observations[0]['user']['icon_url'])) {
-            $avatarRemote = $observations[0]['user']['icon_url'];
-            $localAvatarFilename = $cachePath . md5($avatarRemote) . '.jpg';
-            $localAvatarRelPath = 'cache/mod_inaturalist_observations/' . md5($avatarRemote) . '.jpg';
 
-            if (!File::exists($localAvatarFilename)) {
+        if (
+            $cachePath !== ''
+            && !empty($observations[0]['user']['icon_url'])
+        ) {
+            $avatarRemote =
+                (string) $observations[0]['user']['icon_url'];
+
+            $avatarFilename = md5($avatarRemote) . '.jpg';
+
+            $localAvatarFilename =
+                $cachePath . $avatarFilename;
+
+            $localAvatarRelPath =
+                'cache/mod_inaturalist_observations/'
+                . $avatarFilename;
+
+            if (!is_file($localAvatarFilename)) {
                 try {
-                    $http = HttpFactory::getHttp();
                     $response = $http->get($avatarRemote);
-                    if ($response->code === 200) {
-                        File::write($localAvatarFilename, $response->body);
+
+                    if ($response->getStatusCode() === 200) {
+                        $body = (string) $response->getBody();
+
+                        if ($body !== '') {
+                            file_put_contents(
+                                $localAvatarFilename,
+                                $body,
+                                LOCK_EX
+                            );
+                        }
                     }
-                } catch (Exception $e) {
-                    // Fehler ignorieren
+                } catch (\Throwable $e) {
+                    // Fehler beim Avatar-Download ignorieren.
                 }
             }
 
-            $avatarUrl = $localAvatarRelPath;
+            if (is_file($localAvatarFilename)) {
+                $avatarUrl = $localAvatarRelPath;
+            }
         }
 
+        /*
+         * Daten an das Modul zurückgeben.
+         */
         return [
             'observations' => $cachedObservations,
-            'avatar' => $avatarUrl,
-            'username' => $userId,
+            'avatar'       => $avatarUrl,
+            'username'     => $userId,
         ];
     }
 }
