@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.0-rc.1] - 2026-08-13
+### Changed
+- Updated the module for Joomla 6 compatibility.
+- Updated HTTP communication with the iNaturalist API to use the current Joomla HTTP API.
+- Updated image and avatar caching for Joomla 6.
+- Replaced deprecated Joomla API calls.
+
 ## [1.0.0-beta.2] - 2025-05-21
 ### Changed
 - Date output in the module template is now locale-aware using `IntlDateFormatter`.
