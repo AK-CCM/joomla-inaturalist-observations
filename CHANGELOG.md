@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.0-rc.2] - 2026-08-14
+### Fixed
+- Corrected the taxon IDs for Plants, Fungi and Animals in the module configuration.
+- Removed leading Plus Codes from observation location output.
+
 ## [1.0.0-rc.1] - 2026-08-13
 ### Changed
 - Updated the module for Joomla 6 compatibility.
