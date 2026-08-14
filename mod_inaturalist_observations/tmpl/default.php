@@ -29,20 +29,26 @@ if (empty($observations)) {
     $displayName = $commonName ?: $scientificName;
 
     $date = '';
-	if (!empty($observation['observed_on'])) {
-    $timestamp = strtotime($observation['observed_on']);
-    $locale = \JFactory::getLanguage()->getTag(); // e.g. 'de-DE' or 'en-GB'
+    if (!empty($observation['observed_on'])) {
+        $timestamp = strtotime($observation['observed_on']);
+        $locale = \JFactory::getLanguage()->getTag(); // e.g. 'de-DE' or 'en-GB'
 
-    $formatter = new \IntlDateFormatter(
-        $locale,
-        \IntlDateFormatter::LONG,
-        \IntlDateFormatter::NONE
-    );
+        $formatter = new \IntlDateFormatter(
+            $locale,
+            \IntlDateFormatter::LONG,
+            \IntlDateFormatter::NONE
+        );
 
-    $date = $formatter->format($timestamp);
+        $date = $formatter->format($timestamp);
     }
 
-    $place = !empty($observation['place_guess']) ? htmlspecialchars($observation['place_guess'], ENT_QUOTES, 'UTF-8') : '';
+    $place = $observation['place_guess'] ?? '';
+
+    // Remove a leading Open Location Code (Plus Code), e.g.
+    // PQWV+HC, 86609 Donauwörth, Deutschland
+    // becomes "86609 Donauwörth, Deutschland".
+    $place = preg_replace('/^[23456789CFGHJMPQRVWX]{2,8}\+[23456789CFGHJMPQRVWX]{2,7},\s*/i', '', $place);
+    $place = htmlspecialchars($place, ENT_QUOTES, 'UTF-8');
 
     $observationUrl = 'https://www.inaturalist.org/observations/' . (int) $observation['id'];
 ?>
