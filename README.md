@@ -108,7 +108,7 @@ This module is released under the [GNU General Public License v3.0](https://www.
 
 ## ✨ What's Next?
 
-This module works as intended, but I won’t be actively developing it further. I’m not a professional developer, and without the help of OpenAI's ChatGPT I wouldn’t have been able to create it.
+This module works as intended but will only be updated sporadically. I’m not a professional developer, and without the help of OpenAI's ChatGPT I wouldn’t have been able to create it.
 
 If you find it useful and want to improve or extend it, feel free to fork the repository. While I won’t be adding new features, I hope the module can still be valuable to the Joomla! and iNaturalist communities.
 
