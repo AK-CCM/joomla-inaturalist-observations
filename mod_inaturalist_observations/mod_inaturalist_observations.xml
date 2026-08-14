@@ -42,9 +42,9 @@
                        label="MOD_INATURALIST_OBSERVATIONS_TAXON_FILTER_LABEL"
                        description="MOD_INATURALIST_OBSERVATIONS_TAXON_FILTER_DESC">
                     <option value="">MOD_INATURALIST_OBSERVATIONS_TAXON_ALL</option>
-                    <option value="47170">MOD_INATURALIST_OBSERVATIONS_TAXON_PLANTS</option>
-                    <option value="47169">MOD_INATURALIST_OBSERVATIONS_TAXON_FUNGI</option>
-                    <option value="47168">MOD_INATURALIST_OBSERVATIONS_TAXON_ANIMALS</option>
+                    <option value="47126">MOD_INATURALIST_OBSERVATIONS_TAXON_PLANTS</option>
+                    <option value="47170">MOD_INATURALIST_OBSERVATIONS_TAXON_FUNGI</option>
+                    <option value="1">MOD_INATURALIST_OBSERVATIONS_TAXON_ANIMALS</option>
                     <option value="custom">MOD_INATURALIST_OBSERVATIONS_TAXON_CUSTOM</option>
                 </field>
 
