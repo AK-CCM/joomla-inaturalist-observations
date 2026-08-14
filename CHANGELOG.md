@@ -6,6 +6,9 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - Corrected the taxon IDs for Plants, Fungi and Animals in the module configuration.
 - Removed leading Plus Codes from observation location output.
+### Tested with
+- Joomla 5.4.7 with PHP 8.3.32
+- Joomla 6.1.2 with PHP 8.3.32
 
 ## [1.0.0-rc.1] - 2026-08-13
 ### Changed
