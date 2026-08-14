@@ -5,11 +5,11 @@
         <language tag="en-GB">iNaturalist Observations</language>
         <language tag="de-DE">iNaturalist-Beobachtungen</language>
     </title>
-    <version>1.0.0-rc.1</version>
+    <version>1.0.0-rc.2</version>
     <description>Displays recent iNaturalist observations from a user, optionally filtered by taxon – Zeigt aktuelle iNaturalist-Beobachtungen eines Nutzers an, optional gefiltert nach Taxon.</description>
     
     <author>Andreas Kunze</author>
-    <creationDate>2025-04-22</creationDate>
+    <creationDate>2026-08-14</creationDate>
     <authorUrl>https://github.com/AK-CCM/joomla-inaturalist-observations</authorUrl>
     <copyright>Andreas Kunze, assisted by ChatGPT (OpenAI)</copyright>
     <license>GNU General Public License v3.0</license>
