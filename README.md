@@ -86,7 +86,7 @@ location /cache/mod_inaturalist_observations/ {
 }
 ```
 
-## 📄 Privacy Policy Text Template
+## 📄 Suggested Privacy Policy Wording
 
 The following is a suggested text for a section of a website's privacy policy when using the iNaturalist Observations module. It may be freely adapted and used. It is provided without warranty and does not constitute legal advice. The author assumes no liability for its use.
 
